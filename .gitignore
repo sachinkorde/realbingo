@@ -1,0 +1,94 @@
+# ── Unity generated ──────────────────────────────────────────────────────────
+# Rebuilt from Assets + ProjectSettings on open. Library alone is several GB and
+# differs per machine, so committing it is both huge and useless to a teammate.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# Asset Store downloads — re-importable, and often licence-restricted
+/[Aa]ssets/AssetStoreTools*
+/[Aa]ssets/Plugins/Editor/JetBrains*
+
+# ── Builds and packages ──────────────────────────────────────────────────────
+# The build/ folder here holds ~15 dated APK snapshots. Binaries do not belong
+# in git: they bloat every clone forever, and git cannot diff them.
+*.apk
+*.aab
+*.app
+*.ipa
+*.unitypackage
+*.unitypackage.meta
+/build_for_git/
+/[Bb]urst[Dd]ebug[Ii]nformation*/
+*_BurstDebugInformation_DoNotShip/
+*_BackUpThisFolder_ButDontShipItWithYourGame/
+
+# ── IDE / generated project files ────────────────────────────────────────────
+# Unity regenerates these from the Packages manifest.
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+.vs/
+.vscode/
+.idea/
+.consulo/
+.gradle/
+ExportedObj/
+
+# ── Other source control ─────────────────────────────────────────────────────
+# This project was on Plastic SCM; its metadata should not follow it into git.
+/.plastic/
+/.utmp/
+/[Aa]ssets/Plugins/PlasticSCM*
+
+# ── Local / machine specific ─────────────────────────────────────────────────
+sysinfo.txt
+crashlytics-build.properties
+*.private
+*.private.meta
+~UnityDirMonSyncFile~*
+.DS_Store*
+Thumbs.db
+Desktop.ini
+
+# ── Addressables ─────────────────────────────────────────────────────────────
+/[Aa]ssets/AddressableAssetsData/*/*.bin*
+/[Aa]ssets/StreamingAssets/aa.meta
+/[Aa]ssets/StreamingAssets/aa/*
+
+# ── Secrets ──────────────────────────────────────────────────────────────────
+# Keystores sign your releases: anyone holding one can publish an update that
+# Play accepts as genuinely yours. They never go in a repo.
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+.env
+.env.*
+secrets.json
+
+# ── Claude Code ──────────────────────────────────────────────────────────────
+.claude/settings.local.json

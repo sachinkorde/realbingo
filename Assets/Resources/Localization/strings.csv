@@ -1,0 +1,340 @@
+key,en,hi,mr,_match
+# ─────────────────────────────────────────────────────────────────────────────
+# Real Bingo — localization sheet.
+#   Column 1 is the key. en / hi / mr are languages.
+#   Add a language = add a COLUMN (header = its code) and fill it in. No code change.
+#   A blank cell falls back to English. A missing key shows on screen as [key.name].
+#   {0} {1} are runtime values — KEEP them, and keep their order where grammar allows.
+#   Rows starting with # are comments.
+#
+#   _match is NOT a language. Columns whose name starts with an underscore are
+#   ignored at runtime. It holds the exact text a scene label currently shows, so
+#   the editor tool can still find the right row where en has been corrected --
+#   several scene labels have typos (Chage Password, Bonus Anount, Refferal Code,
+#   F&Q) and those corrections should reach players.
+# ─────────────────────────────────────────────────────────────────────────────
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║ PART 1 — strings used from C# via L.T("key")                              ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+# ── Common ───────────────────────────────────────────────────────────────────
+common.ok,OK,ठीक है,ठीक आहे
+common.cancel,Cancel,रद्द करें,रद्द करा
+common.confirm,Confirm,पुष्टि करें,पुष्टी करा
+common.save,Save,सेव करें,सेव्ह करा
+common.next,Next,आगे,पुढे
+common.back,Back,पीछे,मागे
+common.close,Close,बंद करें,बंद करा
+common.select,Select,चुनें,निवडा
+common.submit,Submit,सबमिट करें,सबमिट करा
+common.retry,Try again,फिर कोशिश करें,पुन्हा प्रयत्न करा
+common.loading,Loading…,लोड हो रहा है…,लोड होत आहे…
+common.yes,Yes,हाँ,होय
+common.no,No,नहीं,नाही
+common.male,Male,पुरुष,पुरुष
+common.female,Female,महिला,महिला
+common.other,Other,अन्य,इतर
+common.optional,(Optional),(वैकल्पिक),(ऐच्छिक)
+# ── Language picker ──────────────────────────────────────────────────────────
+language.title,Choose your language,अपनी भाषा चुनें,तुमची भाषा निवडा,Select Language
+language.subtitle,You can change this later in Settings,आप इसे बाद में सेटिंग्स में बदल सकते हैं,तुम्ही हे नंतर सेटिंग्जमध्ये बदलू शकता
+language.continue,Continue,आगे बढ़ें,पुढे चला
+language.settings_row,Language,भाषा,भाषा
+language.change,Change Language,भाषा बदलें,भाषा बदला
+language.cancel,Cancel,रद्द करें,रद्द करा
+# ── Login ────────────────────────────────────────────────────────────────────
+login.title,Login,लॉग इन,लॉग इन
+login.button,LOG IN,लॉग इन करें,लॉग इन करा
+login.credential_placeholder,Username / Mobile No.,यूज़रनेम / मोबाइल नंबर,वापरकर्तानाव / मोबाइल क्रमांक
+login.password_placeholder,Enter Password,पासवर्ड डालें,पासवर्ड टाका
+login.forgot,Forgot Password?,पासवर्ड भूल गए?,पासवर्ड विसरलात?
+login.no_account,Don't have an account?,खाता नहीं है?,खाते नाही?
+login.register_now,REGISTER NOW,अभी रजिस्टर करें,आता नोंदणी करा
+login.success,Login successful!,लॉग इन हो गया!,लॉग इन झाले!
+login.enter_credential,Please enter mobile number or email,कृपया मोबाइल नंबर या ईमेल डालें,कृपया मोबाइल क्रमांक किंवा ईमेल टाका
+login.enter_password,Please enter password,कृपया पासवर्ड डालें,कृपया पासवर्ड टाका
+# ── Register ─────────────────────────────────────────────────────────────────
+register.title,Sign Up,साइन अप,साइन अप
+register.have_account,Already have an account?,पहले से खाता है?,आधीपासून खाते आहे?
+register.name_placeholder,Enter Full Name,पूरा नाम डालें,पूर्ण नाव टाका
+register.username_label,Name / Username,नाम / यूज़रनेम,नाव / वापरकर्तानाव
+register.mobile_placeholder,Mobile Number,मोबाइल नंबर,मोबाइल क्रमांक
+register.email_placeholder,Email,ईमेल,ईमेल
+register.password_placeholder,Create Password,पासवर्ड बनाएं,पासवर्ड तयार करा
+register.confirm_placeholder,Confirm Password,पासवर्ड की पुष्टि करें,पासवर्डची पुष्टी करा
+register.referral_placeholder,"Referral Code
+(Optional)","रेफरल कोड
+(वैकल्पिक)","रेफरल कोड
+(ऐच्छिक)"
+register.get_otp,GET OTP,OTP पाएं,OTP मिळवा
+register.resend_otp,Resend OTP,OTP दोबारा भेजें,OTP पुन्हा पाठवा
+register.button,Register,रजिस्टर करें,नोंदणी करा
+register.success,Registration successful!,रजिस्ट्रेशन हो गया!,नोंदणी झाली!
+register.enter_name,Please enter your name,कृपया अपना नाम डालें,कृपया तुमचे नाव टाका
+register.enter_email,Please enter a valid email address,कृपया सही ईमेल पता डालें,कृपया वैध ईमेल पत्ता टाका
+register.enter_mobile,Please enter a valid {0}-digit mobile number,कृपया सही {0} अंकों का मोबाइल नंबर डालें,कृपया वैध {0} अंकी मोबाइल क्रमांक टाका
+register.enter_otp,Please enter a valid {0}-digit OTP,कृपया सही {0} अंकों का OTP डालें,कृपया वैध {0} अंकी OTP टाका
+register.password_short,Password must be at least {0} characters,पासवर्ड कम से कम {0} अक्षरों का होना चाहिए,पासवर्ड किमान {0} अक्षरांचा असावा
+register.password_mismatch,Passwords do not match,पासवर्ड मेल नहीं खा रहे,पासवर्ड जुळत नाहीत
+register.enter_both_passwords,Please enter and confirm your password,कृपया पासवर्ड डालें और उसकी पुष्टि करें,कृपया पासवर्ड टाका आणि पुष्टी करा
+register.fill_all,Please fill in all details!,कृपया सभी जानकारी भरें!,कृपया सर्व माहिती भरा!
+# ── Username availability ────────────────────────────────────────────────────
+username.checking,Checking…,जाँच हो रही है…,तपासत आहे…
+username.available,Username available!,यह यूज़रनेम उपलब्ध है!,हे वापरकर्तानाव उपलब्ध आहे!
+username.taken,That username is already taken. Please choose another.,यह यूज़रनेम पहले से लिया जा चुका है। कृपया दूसरा चुनें।,हे वापरकर्तानाव आधीच घेतले आहे. कृपया दुसरे निवडा.
+# ── OTP ──────────────────────────────────────────────────────────────────────
+otp.label,OTP,OTP,OTP
+otp.sent,OTP sent successfully!,OTP भेज दिया गया!,OTP पाठवला!
+otp.verified,OTP verified!,OTP सत्यापित हो गया!,OTP पडताळला!
+otp.resend_now,Didn't get the code? You can resend it now.,कोड नहीं मिला? अब दोबारा भेज सकते हैं।,कोड मिळाला नाही? आता पुन्हा पाठवू शकता.
+otp.change_mobile,Change Mobile Number,मोबाइल नंबर बदलें,मोबाइल क्रमांक बदला
+# ── Forgot / reset password ──────────────────────────────────────────────────
+forgot.title,Forgot Password,पासवर्ड भूल गए,पासवर्ड विसरलात
+forgot.verify,Verify,सत्यापित करें,पडताळा
+reset.title,RESET Password,पासवर्ड रीसेट करें,पासवर्ड रीसेट करा
+reset.new_placeholder,Enter New Password,नया पासवर्ड डालें,नवीन पासवर्ड टाका
+reset.confirm_placeholder,Confirm New Password,नए पासवर्ड की पुष्टि करें,नवीन पासवर्डची पुष्टी करा
+reset.success,Password reset successful!,पासवर्ड रीसेट हो गया!,पासवर्ड रीसेट झाला!
+reset.change_password,Change Password,पासवर्ड बदलें,पासवर्ड बदला
+# ── Game screen ──────────────────────────────────────────────────────────────
+game.last_results,Last 10 Results,पिछले 10 नतीजे,शेवटचे 10 निकाल
+game.repeat,Repeat,दोहराएं,पुन्हा करा
+game.how_to_play,How to Play,कैसे खेलें,कसे खेळायचे
+game.betting_closed,Betting is closed for this round.,इस राउंड के लिए बेटिंग बंद है।,या फेरीसाठी बेटिंग बंद आहे.
+game.waiting_result,Waiting for the result… check your connection.,नतीजे का इंतज़ार है… अपना कनेक्शन देखें।,निकालाची वाट पाहत आहोत… तुमचे कनेक्शन तपासा.
+game.history_failed,Could not load recent results.,हाल के नतीजे लोड नहीं हो सके।,अलीकडील निकाल लोड होऊ शकले नाहीत.
+game.offline,No internet connection.,इंटरनेट कनेक्शन नहीं है।,इंटरनेट कनेक्शन नाही.
+game.winning_number,Winning Number: {0},जीतने वाला नंबर: {0},जिंकणारा क्रमांक: {0}
+# ── Wallet ───────────────────────────────────────────────────────────────────
+wallet.insufficient,Insufficient wallet balance.,वॉलेट में पर्याप्त बैलेंस नहीं है।,वॉलेटमध्ये पुरेशी शिल्लक नाही.
+wallet.balance,Balance:,बैलेंस:,शिल्लक:
+wallet.add_cash,ADD CASH,पैसे जोड़ें,पैसे जोडा
+wallet.add_money,Add Money,पैसे जोड़ें,पैसे जोडा
+wallet.select_amount,Select Amount,राशि चुनें,रक्कम निवडा
+wallet.withdraw,Withdraw,निकालें,काढा
+wallet.enter_amount,Please select or enter an amount.,कृपया राशि चुनें या डालें।,कृपया रक्कम निवडा किंवा टाका.
+wallet.enter_withdraw_amount,Please select or enter a withdraw amount.,कृपया निकालने की राशि चुनें या डालें।,कृपया काढण्याची रक्कम निवडा किंवा टाका.
+wallet.added,{0} added to your wallet.,आपके वॉलेट में {0} जोड़े गए।,तुमच्या वॉलेटमध्ये {0} जोडले.
+wallet.deposit_pending,Deposit requested. Your wallet updates once the payment is confirmed.,जमा का अनुरोध भेजा गया। भुगतान की पुष्टि होते ही वॉलेट अपडेट हो जाएगा।,ठेवीची विनंती पाठवली. पेमेंटची पुष्टी होताच वॉलेट अपडेट होईल.
+wallet.withdraw_requested,Withdrawal requested: {0},निकासी का अनुरोध भेजा गया: {0},काढण्याची विनंती पाठवली: {0}
+wallet.withdraw_failed,Withdrawal failed.,निकासी नहीं हो सकी।,काढणे अयशस्वी झाले.
+wallet.commission,Commission,कमीशन,कमिशन
+wallet.check_status,Check Status,स्थिति देखें,स्थिती पहा
+# ── Transfer ─────────────────────────────────────────────────────────────────
+transfer.title,Transfer Money,पैसे भेजें,पैसे पाठवा
+transfer.button,TRANSFER CASH,पैसे भेजें,पैसे पाठवा
+transfer.recipient_placeholder,Recipient username / Mobile,पाने वाले का यूज़रनेम / मोबाइल,प्राप्तकर्त्याचे वापरकर्तानाव / मोबाइल
+transfer.account_owner,Account Owner:,खाता धारक:,खातेदार:
+transfer.invalid,Enter a valid recipient and amount.,सही प्राप्तकर्ता और राशि डालें।,वैध प्राप्तकर्ता आणि रक्कम टाका.
+# ── Profile ──────────────────────────────────────────────────────────────────
+profile.title,Profile,प्रोफ़ाइल,प्रोफाइल
+profile.edit,Edit Profile,प्रोफ़ाइल बदलें,प्रोफाइल संपादित करा
+profile.name,Name:,नाम:,नाव:
+profile.mobile,Mobile:,मोबाइल:,मोबाइल:
+profile.email,Email:,ईमेल:,ईमेल:
+profile.gender,Gender:,लिंग:,लिंग:
+profile.dob,Date Of Birth:,जन्म तिथि:,जन्मतारीख:
+profile.address,Address:,पता:,पत्ता:
+profile.adhar_no,Aadhaar No.:,आधार नंबर:,आधार क्रमांक:
+profile.pan_no,PAN No.:,पैन नंबर:,पॅन क्रमांक:
+profile.adhar_image,Aadhaar Card Image:,आधार कार्ड की फोटो:,आधार कार्डचा फोटो:
+profile.pan_image,PAN Card Image:,पैन कार्ड की फोटो:,पॅन कार्डचा फोटो:
+profile.profile_image,Profile Image:,प्रोफ़ाइल फोटो:,प्रोफाइल फोटो:
+profile.status,Status:,स्थिति:,स्थिती:
+profile.logout,Log Out,लॉग आउट,लॉग आउट
+profile.enter_name,Enter Name,नाम डालें,नाव टाका
+profile.enter_mobile,Enter Mobile,मोबाइल डालें,मोबाइल टाका
+profile.enter_dob,Enter DOB,जन्म तिथि डालें,जन्मतारीख टाका
+profile.enter_address,Enter Address,पता डालें,पत्ता टाका
+profile.enter_adhar,Enter Aadhaar No.,आधार नंबर डालें,आधार क्रमांक टाका
+profile.enter_pan,Enter PAN No.,पैन नंबर डालें,पॅन क्रमांक टाका
+# ── Bank details ─────────────────────────────────────────────────────────────
+bank.title,Bank Details,बैंक जानकारी,बँक तपशील
+bank.edit,Edit Bank Details,बैंक जानकारी बदलें,बँक तपशील संपादित करा
+bank.name,Bank Name:,बैंक का नाम:,बँकेचे नाव:
+bank.branch,Branch Name:,शाखा का नाम:,शाखेचे नाव:
+bank.holder,Account Holder Name:,खाता धारक का नाम:,खातेदाराचे नाव:
+bank.account_number,Account Number:,खाता नंबर:,खाते क्रमांक:
+bank.ifsc,IFSC Code:,IFSC कोड:,IFSC कोड:
+bank.upi,UPI ID:,UPI आईडी:,UPI आयडी:
+bank.enter_name,Enter Bank Name,बैंक का नाम डालें,बँकेचे नाव टाका
+bank.enter_branch,Enter Branch Name,शाखा का नाम डालें,शाखेचे नाव टाका
+bank.enter_account,Enter Account Number,खाता नंबर डालें,खाते क्रमांक टाका
+bank.enter_ifsc,Enter IFSC Code,IFSC कोड डालें,IFSC कोड टाका
+bank.enter_upi,Enter UPI ID,UPI आईडी डालें,UPI आयडी टाका
+# ── Refer & earn ─────────────────────────────────────────────────────────────
+referral.title,Refer & Earn,रेफर करें और कमाएं,रेफर करा आणि कमवा
+referral.my_referrals,My Referrals,मेरे रेफरल,माझे रेफरल
+referral.refer_friends,Refer Friends,दोस्तों को रेफर करें,मित्रांना रेफर करा
+referral.code,Referral Code:,रेफरल कोड:,रेफरल कोड:
+referral.bonus,Bonus Amount:,बोनस राशि:,बोनस रक्कम:
+referral.total_referred,Total Referred:,कुल रेफर किए:,एकूण रेफर केले:
+referral.total_earned,Total Earned:,कुल कमाई:,एकूण कमाई:
+referral.copied,Referral code copied.,रेफरल कोड कॉपी हो गया।,रेफरल कोड कॉपी झाला.
+referral.message_copied,Referral message copied to clipboard.,रेफरल संदेश क्लिपबोर्ड पर कॉपी हो गया।,रेफरल संदेश क्लिपबोर्डवर कॉपी झाला.
+referral.not_loaded,Your referral code isn't loaded yet.,आपका रेफरल कोड अभी लोड नहीं हुआ है।,तुमचा रेफरल कोड अजून लोड झालेला नाही.
+referral.share_failed,Could not open the share menu.,शेयर मेन्यू नहीं खुल सका।,शेअर मेनू उघडू शकला नाही.
+# ── Settings ─────────────────────────────────────────────────────────────────
+settings.title,Settings,सेटिंग्स,सेटिंग्ज
+settings.music,Music,संगीत,संगीत
+settings.sound,Sound,आवाज़,आवाज
+settings.vibration,Vibration,कंपन,कंपन
+settings.help,Help,मदद,मदत
+settings.faq,FAQ,सामान्य सवाल,सामान्य प्रश्न
+# ── Update gate ──────────────────────────────────────────────────────────────
+update.title,Update Available,अपडेट उपलब्ध है,अपडेट उपलब्ध आहे
+update.message,A new version ({0}) is available.,नया वर्शन ({0}) उपलब्ध है।,नवीन आवृत्ती ({0}) उपलब्ध आहे.
+update.forced,Please update the app for better performance,बेहतर अनुभव के लिए कृपया ऐप अपडेट करें,चांगल्या अनुभवासाठी कृपया ॲप अपडेट करा
+update.button,Update,अपडेट करें,अपडेट करा
+update.later,Later,बाद में,नंतर
+update.no_link,Download link is unavailable. Please try again later.,डाउनलोड लिंक उपलब्ध नहीं है। कृपया बाद में कोशिश करें।,डाउनलोड लिंक उपलब्ध नाही. कृपया नंतर प्रयत्न करा.
+# ── Network / API errors ─────────────────────────────────────────────────────
+error.no_internet,No internet connection. Please check your network and try again.,इंटरनेट कनेक्शन नहीं है। कृपया अपना नेटवर्क देखकर फिर कोशिश करें।,इंटरनेट कनेक्शन नाही. कृपया तुमचे नेटवर्क तपासून पुन्हा प्रयत्न करा.
+error.unreachable,Cannot reach the server. Please try again in a moment.,सर्वर से संपर्क नहीं हो पा रहा। कृपया थोड़ी देर में कोशिश करें।,सर्व्हरशी संपर्क होत नाही. कृपया थोड्या वेळाने प्रयत्न करा.
+error.session_expired,Your session has expired. Please log in again.,आपका सेशन खत्म हो गया है। कृपया दोबारा लॉग इन करें।,तुमचे सेशन संपले आहे. कृपया पुन्हा लॉग इन करा.
+error.forbidden,You do not have permission to do that.,आपके पास इसकी अनुमति नहीं है।,तुम्हाला याची परवानगी नाही.
+error.not_found,That could not be found. Please try again.,यह नहीं मिला। कृपया फिर कोशिश करें।,हे सापडले नाही. कृपया पुन्हा प्रयत्न करा.
+error.validation,Please check the details you entered and try again.,कृपया भरी गई जानकारी देखकर फिर कोशिश करें।,कृपया भरलेली माहिती तपासून पुन्हा प्रयत्न करा.
+error.too_many,Too many attempts. Please wait a minute and try again.,बहुत ज़्यादा कोशिशें। कृपया एक मिनट रुककर फिर कोशिश करें।,खूप जास्त प्रयत्न. कृपया एक मिनिट थांबून पुन्हा प्रयत्न करा.
+error.server,The server is having trouble right now. Please try again shortly.,सर्वर में अभी दिक्कत है। कृपया थोड़ी देर में कोशिश करें।,सर्व्हरमध्ये सध्या अडचण आहे. कृपया थोड्या वेळाने प्रयत्न करा.
+error.generic,Something went wrong. Please try again.,कुछ गलत हो गया। कृपया फिर कोशिश करें।,काहीतरी चूक झाली. कृपया पुन्हा प्रयत्न करा.
+error.connect_failed,Unable to connect. Please try again.,कनेक्ट नहीं हो सका। कृपया फिर कोशिश करें।,कनेक्ट होऊ शकले नाही. कृपया पुन्हा प्रयत्न करा.
+error.restart_app,Something went wrong. Please restart the app.,कुछ गलत हो गया। कृपया ऐप दोबारा शुरू करें।,काहीतरी चूक झाली. कृपया ॲप पुन्हा सुरू करा.
+error.login_again,Couldn't reach the server. Please log in again.,सर्वर से संपर्क नहीं हुआ। कृपया दोबारा लॉग इन करें।,सर्व्हरशी संपर्क झाला नाही. कृपया पुन्हा लॉग इन करा.
+# ╔═══════════════════════════════════════════════════════════════════════════╗
+# ║ PART 2 — scene labels (text typed into TMP_Text in Main / GameScene)      ║
+# ║ The editor tool matches a label to its row by comparing the label's       ║
+# ║ current text against _match, or against en when _match is empty.          ║
+# ╚═══════════════════════════════════════════════════════════════════════════╝
+# ── Main: splash / welcome ───────────────────────────────────────────────────
+ui.welcome_title,"Welcome
+to Real Bingo !","स्वागत है
+Real Bingo में !","स्वागत आहे
+Real Bingo मध्ये !","Welcome
+to Roulette Casino !"
+ui.welcome_tagline,"Bet on numbers, spin the wheel, and
+win real rewards","नंबर पर दांव लगाएं, पहिया घुमाएं, और
+असली इनाम जीतें","नंबरवर पैज लावा, चाक फिरवा, आणि
+खरी बक्षिसे जिंका"
+# ── Main: login ──────────────────────────────────────────────────────────────
+ui.login,Login,लॉग इन,लॉग इन
+ui.log_in_button,LOG IN,लॉग इन करें,लॉग इन करा
+ui.username_mobile,Username / Mobile No.,यूज़रनेम / मोबाइल नंबर,वापरकर्तानाव / मोबाइल क्रमांक
+ui.password,Password,पासवर्ड,पासवर्ड
+ui.enter_password,Enter Password,पासवर्ड डालें,पासवर्ड टाका
+ui.enter_password_2,Enter Password,पासवर्ड डालें,पासवर्ड टाका,Enter  Password
+ui.forgot_password_q,Forgot Password?,पासवर्ड भूल गए?,पासवर्ड विसरलात?
+ui.forgot_password,Forgot Password,पासवर्ड भूल गए,पासवर्ड विसरलात
+ui.no_account,Don't have an account?,खाता नहीं है?,खाते नाही?
+ui.register_now,REGISTER NOW,अभी रजिस्टर करें,आता नोंदणी करा
+# ── Main: register ───────────────────────────────────────────────────────────
+ui.sign_up,Sign Up,साइन अप,साइन अप
+ui.register,Register,रजिस्टर करें,नोंदणी करा
+ui.have_account,Already have an account?,पहले से खाता है?,आधीपासून खाते आहे?
+ui.enter_full_name,Enter Full Name,पूरा नाम डालें,पूर्ण नाव टाका
+ui.name_username,Name / Username,नाम / यूज़रनेम,नाव / वापरकर्तानाव
+ui.mobile,Mobile,मोबाइल,मोबाइल
+ui.mobile_number,Mobile Number,मोबाइल नंबर,मोबाइल क्रमांक
+ui.email,Email,ईमेल,ईमेल
+ui.create_password,Create Password,पासवर्ड बनाएं,पासवर्ड तयार करा
+ui.confirm_password,Confirm Password,पासवर्ड की पुष्टि करें,पासवर्डची पुष्टी करा
+ui.referral_code_optional,"Referral Code
+(Optional)","रेफरल कोड
+(वैकल्पिक)","रेफरल कोड
+(ऐच्छिक)",Referral Code \n(Optional)
+ui.referral_code_field,Referral Code,रेफरल कोड,रेफरल कोड,Refferal Code
+# ── Main: OTP ────────────────────────────────────────────────────────────────
+ui.otp,OTP,OTP,OTP
+ui.get_otp,GET OTP,OTP पाएं,OTP मिळवा
+ui.resend_otp,Resend OTP,OTP दोबारा भेजें,OTP पुन्हा पाठवा
+ui.verify,Verify,सत्यापित करें,पडताळा
+ui.change_mobile_number,Change Mobile Number,मोबाइल नंबर बदलें,मोबाइल क्रमांक बदला
+ui.confirm,Confirm,पुष्टि करें,पुष्टी करा
+# ── Main: reset password ─────────────────────────────────────────────────────
+ui.reset_password,RESET Password,पासवर्ड रीसेट करें,पासवर्ड रीसेट करा
+ui.enter_new_password,Enter New Password,नया पासवर्ड डालें,नवीन पासवर्ड टाका
+ui.confirm_new_password,Confirm New Password,नए पासवर्ड की पुष्टि करें,नवीन पासवर्डची पुष्टी करा
+# ── Main: update gate ────────────────────────────────────────────────────────
+ui.update_available,Update Available,अपडेट उपलब्ध है,अपडेट उपलब्ध आहे
+ui.update_app_message,Please update the app for better performance,बेहतर अनुभव के लिए कृपया ऐप अपडेट करें,चांगल्या अनुभवासाठी कृपया ॲप अपडेट करा,Please Update App for better Performance
+ui.update,Update,अपडेट करें,अपडेट करा
+ui.later,Later,बाद में,नंतर
+ui.account_added,Account added successfully,खाता सफलतापूर्वक बन गया,खाते यशस्वीरित्या तयार झाले,Account  added successfully
+# ── Game: board + wheel ──────────────────────────────────────────────────────
+ui.last_10_results,Last 10 Results,पिछले 10 नतीजे,शेवटचे 10 निकाल
+ui.repeat,Repeat,दोहराएं,पुन्हा करा
+ui.undo,Undo,पिछला हटाएं,मागचे काढा
+ui.how_to_play,How to Play,कैसे खेलें,कसे खेळायचे
+ui.balance,Balance:,बैलेंस:,शिल्लक:
+ui.select_amount,Select Amount,राशि चुनें,रक्कम निवडा
+ui.select,Select,चुनें,निवडा
+ui.cancel,Cancel,रद्द करें,रद्द करा
+ui.save,Save,सेव करें,सेव्ह करा
+ui.next,Next,आगे,पुढे
+ui.upload,Upload,अपलोड करें,अपलोड करा
+ui.upload_doc,Upload Doc,दस्तावेज़ अपलोड करें,कागदपत्र अपलोड करा
+# ── Game: wallet ─────────────────────────────────────────────────────────────
+ui.add_cash,ADD CASH,पैसे जोड़ें,पैसे जोडा
+ui.add_money,Add Money,पैसे जोड़ें,पैसे जोडा
+ui.withdraw_cash,Withdraw CASH,पैसे निकालें,पैसे काढा
+ui.withdraw_money,Withdraw Money,पैसे निकालें,पैसे काढा,withdraw Money
+ui.transfer_cash,Transfer CASH,पैसे भेजें,पैसे पाठवा
+ui.transfer_money,Transfer Money,पैसे भेजें,पैसे पाठवा
+ui.recipient_field,Recipient username / Mobile,पाने वाले का यूज़रनेम / मोबाइल,प्राप्तकर्त्याचे वापरकर्तानाव / मोबाइल,Recipient username/ Mobile
+ui.account_owner,Account Owner:,खाता धारक:,खातेदार:
+ui.commission,Commission,कमीशन,कमिशन
+ui.check_status,Check Status,स्थिति देखें,स्थिती पहा
+# ── Game: profile ────────────────────────────────────────────────────────────
+ui.profile,Profile,प्रोफ़ाइल,प्रोफाइल
+ui.edit_profile,Edit Profile,प्रोफ़ाइल बदलें,प्रोफाइल संपादित करा
+ui.name_label,Name:,नाम:,नाव:
+ui.mobile_label,Mobile:,मोबाइल:,मोबाइल:
+ui.email_label,Email:,ईमेल:,ईमेल:
+ui.gender_label,Gender:,लिंग:,लिंग:
+ui.dob_label,Date Of Birth:,जन्म तिथि:,जन्मतारीख:
+ui.address_label,Address:,पता:,पत्ता:
+ui.adhar_no_label,Aadhaar No.:,आधार नंबर:,आधार क्रमांक:,Adhar No.:
+ui.pan_no_label,PAN No.:,पैन नंबर:,पॅन क्रमांक:,Pan No.:
+ui.adhar_image_label,Aadhaar Card Image:,आधार कार्ड की फोटो:,आधार कार्डचा फोटो:,Adhar Card Image:
+ui.pan_image_label,PAN Card Image:,पैन कार्ड की फोटो:,पॅन कार्डचा फोटो:,Pan Card Image:
+ui.profile_image_label,Profile Image:,प्रोफ़ाइल फोटो:,प्रोफाइल फोटो:
+ui.status_label,Status:,स्थिति:,स्थिती:
+ui.enter_name,Enter Name,नाम डालें,नाव टाका
+ui.enter_mobile,Enter Mobile,मोबाइल डालें,मोबाइल टाका
+ui.enter_dob,Enter DOB,जन्म तिथि डालें,जन्मतारीख टाका
+ui.enter_address,Enter Address,पता डालें,पत्ता टाका
+ui.enter_adhar_no,Enter Aadhaar No.,आधार नंबर डालें,आधार क्रमांक टाका,Enter Adhar No.
+ui.enter_pan_no,Enter PAN Card No.,पैन कार्ड नंबर डालें,पॅन कार्ड क्रमांक टाका,Enter Pan Card No.
+ui.log_out,Log Out,लॉग आउट,लॉग आउट
+ui.change_password,Change Password,पासवर्ड बदलें,पासवर्ड बदला,Chage Password
+# ── Game: bank details ───────────────────────────────────────────────────────
+ui.bank_details,Bank Details,बैंक जानकारी,बँक तपशील
+ui.edit_bank_details,Edit Bank Details,बैंक जानकारी बदलें,बँक तपशील संपादित करा
+ui.bank_name_label,Bank Name:,बैंक का नाम:,बँकेचे नाव:
+ui.branch_name_label,Branch Name:,शाखा का नाम:,शाखेचे नाव:
+ui.account_holder_label,Account Holder Name:,खाता धारक का नाम:,खातेदाराचे नाव:
+ui.account_number_label,Account Number:,खाता नंबर:,खाते क्रमांक:
+ui.account_number_field,Account Number,खाता नंबर,खाते क्रमांक
+ui.ifsc_label,IFSC Code:,IFSC कोड:,IFSC कोड:
+ui.upi_label,UPI ID:,UPI आईडी:,UPI आयडी:,UPI id:
+ui.enter_bank_name,Enter Bank Name,बैंक का नाम डालें,बँकेचे नाव टाका
+ui.enter_branch_name,Enter Branch Name,शाखा का नाम डालें,शाखेचे नाव टाका,Enter branch Name
+ui.enter_account_number,Enter Account Number,खाता नंबर डालें,खाते क्रमांक टाका
+ui.enter_ifsc_code,Enter IFSC Code,IFSC कोड डालें,IFSC कोड टाका
+ui.enter_upi_id,Enter UPI ID,UPI आईडी डालें,UPI आयडी टाका
+# ── Game: refer & earn ───────────────────────────────────────────────────────
+ui.refer_and_earn,Refer & Earn,रेफर करें और कमाएं,रेफर करा आणि कमवा
+ui.refer_and_earn_2,Refer And Earn,रेफर करें और कमाएं,रेफर करा आणि कमवा
+ui.refer_friends,Refer Friends,दोस्तों को रेफर करें,मित्रांना रेफर करा
+ui.my_referrals,My Referrals,मेरे रेफरल,माझे रेफरल
+ui.referral_code_label,Referral Code :,रेफरल कोड :,रेफरल कोड :
+ui.bonus_amount_label,Bonus Amount :,बोनस राशि :,बोनस रक्कम :,Bonus Anount :
+ui.total_referred_label,Total Referred :,कुल रेफर किए :,एकूण रेफर केले :
+ui.total_earned_label,Total Earned :,कुल कमाई :,एकूण कमाई :
+# ── Game: settings ───────────────────────────────────────────────────────────
+ui.setting,Settings,सेटिंग्स,सेटिंग्ज,Setting
+ui.music,Music,संगीत,संगीत
+ui.sound,Sound,आवाज़,आवाज,BGM
+ui.vibration,Vibration,कंपन,कंपन
+ui.volume,Volume,आवाज़ का स्तर,आवाजेची पातळी
+ui.help,Help,मदद,मदत
+ui.faq,FAQ,सामान्य सवाल,सामान्य प्रश्न,F&Q

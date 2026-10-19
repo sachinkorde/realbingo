@@ -1,0 +1,74 @@
+# Let git decide line endings for text, and never touch binaries.
+* text=auto
+
+# ── Unity YAML ───────────────────────────────────────────────────────────────
+# Scenes and prefabs are text, but a normal 3-way merge mangles them: the format
+# is order-sensitive and full of fileID references. merge=unityyamlmerge routes
+# them through Unity's own Smart Merge tool instead.
+#
+# To enable it, add this to your global .gitconfig (path is for Unity 6.3 on
+# Windows; adjust for your install):
+#
+#   [merge "unityyamlmerge"]
+#       tool = unityyamlmerge
+#       cmd = 'D:/UnityEditor/6000.3.16f1/Editor/Data/Tools/UnityYAMLMerge.exe' merge -p "$BASE" "$REMOTE" "$LOCAL" "$MERGED"
+#
+# Without it git falls back to a normal merge, which usually conflicts loudly
+# rather than corrupting silently — but set it up before two people edit one scene.
+*.unity     merge=unityyamlmerge eol=lf
+*.prefab    merge=unityyamlmerge eol=lf
+*.asset     merge=unityyamlmerge eol=lf
+*.mat       merge=unityyamlmerge eol=lf
+*.anim      merge=unityyamlmerge eol=lf
+*.controller merge=unityyamlmerge eol=lf
+*.overrideController merge=unityyamlmerge eol=lf
+*.physicMaterial merge=unityyamlmerge eol=lf
+*.physicsMaterial2D merge=unityyamlmerge eol=lf
+*.playable  merge=unityyamlmerge eol=lf
+*.mask      merge=unityyamlmerge eol=lf
+*.brush     merge=unityyamlmerge eol=lf
+*.flare     merge=unityyamlmerge eol=lf
+*.fontsettings merge=unityyamlmerge eol=lf
+*.guiskin   merge=unityyamlmerge eol=lf
+*.giparams  merge=unityyamlmerge eol=lf
+*.meta      merge=unityyamlmerge eol=lf
+
+# ── Source ───────────────────────────────────────────────────────────────────
+*.cs        text diff=csharp
+*.shader    text
+*.cginc     text
+*.hlsl      text
+*.json      text
+*.md        text
+
+# The localization sheet is UTF-8 with Devanagari in it. Keep LF so a diff
+# shows the row that changed rather than the whole file.
+*.csv       text eol=lf
+
+# ── Binaries ─────────────────────────────────────────────────────────────────
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.psd       binary
+*.ai        binary
+*.tif       binary
+*.tga       binary
+*.exr       binary
+*.hdr       binary
+*.mp3       binary
+*.ogg       binary
+*.wav       binary
+*.aif       binary
+*.mp4       binary
+*.mov       binary
+*.ttf       binary
+*.otf       binary
+*.fbx       binary
+*.obj       binary
+*.blend     binary
+*.dll       binary
+*.so        binary
+*.a         binary
+*.aar       binary
+*.unitypackage binary
