@@ -71,6 +71,18 @@ public class UIEffects : MonoBehaviour
     public float coinSpinSpeed = 220f;
     public Color coinColor = new Color(1f, 0.82f, 0.25f);
 
+    [Header("Chip Flight (PRD Topic 6.3)")]
+    [Tooltip("Seconds for the chip to travel from the chip tray to the betting slot.")]
+    public float chipFlightDuration = 0.38f;
+    [Tooltip("How high the chip arcs above the straight line, in UI units. 0 = a flat slide.")]
+    public float chipFlightArc = 150f;
+    [Tooltip("Chip size while in flight, in UI units.")]
+    public float chipFlightSize = 70f;
+    [Tooltip("Degrees of spin over the whole flight, so it reads as a tossed chip.")]
+    public float chipFlightSpin = 180f;
+    [Tooltip("Seconds for the chip to dissolve once it lands. Kept short: nothing may linger after impact.")]
+    public float chipImpactDuration = 0.12f;
+
     [Header("Performance")]
     [Tooltip("Hard ceiling on simultaneous effect images. Protects low-end devices when several effects overlap.")]
     public int maxPooledImages = 160;
@@ -194,6 +206,34 @@ public class UIEffects : MonoBehaviour
         if (fx == null) return;
 
         fx.PlayCoinShower(duration);
+    }
+
+    /// <summary>
+    /// Tosses a chip from <paramref name="from"/> to <paramref name="to"/> along a
+    /// parabolic arc, then dissolves it where it lands (PRD Topic 6.3 — the stake
+    /// becomes plain text on the slot, and no chip is left rendered after impact).
+    ///
+    /// <paramref name="onImpact"/> fires the moment the chip arrives, so the caller
+    /// can punch or reveal the counter on exactly that frame. It is invoked even
+    /// when the effect cannot run, so a caller never loses its follow-up.
+    /// </summary>
+    public static void ChipFlight(Transform from, Transform to, Sprite chipSprite = null,
+                                  float scaleMultiplier = 1f, System.Action onImpact = null)
+    {
+        if (from == null || to == null)
+        {
+            onImpact?.Invoke();
+            return;
+        }
+
+        UIEffects fx = Resolve(to);
+        if (fx == null)
+        {
+            onImpact?.Invoke();
+            return;
+        }
+
+        fx.PlayChipFlight(from, to, chipSprite, scaleMultiplier, onImpact);
     }
 
     /// <summary>Immediately clears every running effect. Use on scene change or low-spec fallback.</summary>
@@ -409,6 +449,66 @@ public class UIEffects : MonoBehaviour
         img.transform.DOKill();
         img.gameObject.SetActive(false);
         pool.Push(img);
+    }
+
+    // -- Chip flight -----------------------------------------------------------
+
+    private void PlayChipFlight(Transform from, Transform to, Sprite chipSprite,
+                                float scaleMultiplier, System.Action onImpact)
+    {
+        if (overlay == null)
+        {
+            onImpact?.Invoke();
+            return;
+        }
+
+        Vector2 start = ToOverlaySpace(from);
+        Vector2 end = ToOverlaySpace(to);
+
+        // The chip's own art when the caller has it, otherwise the generated coin,
+        // so the effect still works on a board with no sprite wired up.
+        Sprite sprite = chipSprite != null ? chipSprite : GetCoinSprite();
+
+        Image chip = Take(sprite, Color.white);
+        if (chip == null)
+        {
+            onImpact?.Invoke();   // pool exhausted: skip the visual, keep the game correct
+            return;
+        }
+
+        RectTransform rt = chip.rectTransform;
+
+        float size = chipFlightSize * scaleMultiplier;
+        rt.sizeDelta = new Vector2(size, size);
+        rt.anchoredPosition = start;
+
+        // Control point lifted above the midpoint: a real toss, not a slide. A
+        // Bezier rather than DOTween's path keeps this in the overlay's 2D space.
+        Vector2 control = (start + end) * 0.5f + new Vector2(0f, chipFlightArc * scaleMultiplier);
+
+        float progress = 0f;
+        Sequence seq = DOTween.Sequence().SetLink(chip.gameObject);
+
+        seq.Append(DOTween.To(() => progress, value =>
+        {
+            progress = value;
+
+            float inverse = 1f - value;
+            rt.anchoredPosition = inverse * inverse * start
+                                + 2f * inverse * value * control
+                                + value * value * end;
+        }, 1f, chipFlightDuration).SetEase(Ease.InOutQuad));
+
+        seq.Join(rt.DOLocalRotate(new Vector3(0f, 0f, -chipFlightSpin), chipFlightDuration,
+                                  RotateMode.LocalAxisAdd).SetEase(Ease.Linear));
+
+        // Impact: hand over to the counter, then take the chip off the board.
+        seq.AppendCallback(() => onImpact?.Invoke());
+        seq.Append(rt.DOScale(0.2f, chipImpactDuration).SetEase(Ease.InQuad));
+        seq.Join(chip.DOFade(0f, chipImpactDuration));
+
+        Image captured = chip;
+        seq.OnComplete(() => Release(captured));
     }
 
     /// <summary>Converts a UI element's position into the effect overlay's local space.</summary>

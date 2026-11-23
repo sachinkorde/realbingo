@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -17,13 +18,15 @@ public class ChipButton : MonoBehaviour
     public Transform contentTransform;
     public Image chipImage;
     
-    //[Header("Glow Effect")]
-    //[Tooltip("Image behind chip that glows when selected")]
-    //public Image glowImage;
-    //public Color glowColor = new Color(1f, 0.85f, 0f, 0.8f); // Golden glow
-    //public float glowPulseSpeed = 1.5f;
-    //public float glowMinAlpha = 0.4f;
-    //public float glowMaxAlpha = 1f;
+    [Header("Glow (PRD Topic 5.4)")]
+    [Tooltip("Selected chip pulses a halo, so the active chip reads at a glance.")]
+    public bool useGlow = true;
+    [Tooltip("Assign to pulse your own halo image. Left empty, the chip's own light object is pulsed - its Image if it has one, otherwise its Light2D.")]
+    public Image glowImage;
+    [Range(0f, 1f)] public float glowMinAlpha = 0.35f;
+    [Range(0f, 1f)] public float glowMaxAlpha = 0.9f;
+    [Tooltip("Seconds for one half of the pulse.")]
+    public float glowPulseDuration = 0.7f;
     
     //[Header("Selection Ring")]
     //[Tooltip("Ring/border that appears around selected chip")]
@@ -74,10 +77,14 @@ public class ChipButton : MonoBehaviour
     private RectTransform[] floatChildren;
     private Vector2[] floatBasePositions;
     private bool floatTargetsResolved;
-    //private Tween glowTween;
+    private Tween glowTween;
+    private Color glowBaseColor = Color.white;
+    private Light2D glowLight;
+    private float glowBaseIntensity = 1f;
+    private bool glowResolved;
     //private Tween ringTween;
     //private Coroutine lightRaysCoroutine;
-    //private Color originalChipColor;
+    private Color originalChipColor = Color.white;
 
     public GameObject lightObject;
 
@@ -88,9 +95,17 @@ public class ChipButton : MonoBehaviour
             myButton = GetComponent<Button>();
         }
 
+        // 9 of the 10 chips in the scene never had this reference assigned, and
+        // every tint path is guarded by "chipImage != null" — so the dim state
+        // silently did nothing on them. Resolve it from the chip's own art
+        // instead of relying on the Inspector.
+        if (chipImage == null) chipImage = ResolveChipImage();
+
         if (chipImage != null)
         {
-            //originalChipColor = chipImage.color;
+            // Captured before the dim below overwrites it: Select() used to
+            // brighten to hardcoded white, which washes out a coloured chip.
+            originalChipColor = chipImage.color;
         }
 
         CaptureContentBasePosition();
@@ -167,7 +182,7 @@ public class ChipButton : MonoBehaviour
     {
         isSelected = true;
         KillAllTweens();
-        lightObject.SetActive(true);
+        if (lightObject != null) lightObject.SetActive(true);
         // Scale up with bounce
         if (contentTransform != null)
         {
@@ -219,15 +234,17 @@ public class ChipButton : MonoBehaviour
         if (chipImage != null)
         {
             dimTween?.Kill();
-            dimTween = chipImage.DOColor(Color.white, dimFadeDuration);
+            dimTween = chipImage.DOColor(originalChipColor, dimFadeDuration);
         }
+
+        StartGlow();
     }
 
     private void Deselect()
     {
         isSelected = false;
         KillAllTweens();
-        lightObject.SetActive(false);
+        if (lightObject != null) lightObject.SetActive(false);
         // Scale down
         if (contentTransform != null)
         {
@@ -271,6 +288,7 @@ public class ChipButton : MonoBehaviour
         }*/
 
         StopFloat();
+        StopGlow();
 
         // Dim so the currently selected chip is the only bright one on the bar.
         if (useDimState && chipImage != null)
@@ -278,6 +296,135 @@ public class ChipButton : MonoBehaviour
             dimTween?.Kill();
             dimTween = chipImage.DOColor(dimColor, dimFadeDuration);
         }
+    }
+
+    /// <summary>
+    /// Works out what this chip pulses when selected, once.
+    ///
+    /// Order matters. An explicit reference wins. Otherwise the chip's own light
+    /// object is used — in this scene that is a "Triangle" carrying a URP
+    /// Light2D, so the pulse rides its intensity and no new object is needed.
+    /// A halo is only generated when the chip has no light at all.
+    /// </summary>
+    private void ResolveGlow()
+    {
+        if (glowResolved) return;
+        glowResolved = true;
+
+        if (glowImage != null)
+        {
+            glowBaseColor = glowImage.color;
+            return;
+        }
+
+        if (lightObject != null)
+        {
+            Image fromLight = lightObject.GetComponent<Image>();
+            if (fromLight == null) fromLight = lightObject.GetComponentInChildren<Image>(true);
+
+            if (fromLight != null)
+            {
+                glowImage = fromLight;
+                glowBaseColor = fromLight.color;
+                return;
+            }
+
+            glowLight = lightObject.GetComponent<Light2D>();
+            if (glowLight == null) glowLight = lightObject.GetComponentInChildren<Light2D>(true);
+
+            if (glowLight != null)
+            {
+                glowBaseIntensity = glowLight.intensity;
+                return;
+            }
+        }
+
+        // Nothing to pulse. Say so once rather than failing silently — a chip
+        // added without the light object its siblings have (the Joker chip, for
+        // one) would otherwise just quietly never glow.
+        Debug.LogWarning($"[ChipButton] '{name}' has no glow source: assign Glow Image, " +
+                         "or give it a light object with a Light2D like the other chips.", this);
+    }
+
+    private void StartGlow()
+    {
+        if (!useGlow) return;
+
+        ResolveGlow();
+        glowTween?.Kill();
+
+        float low = Mathf.Min(glowMinAlpha, glowMaxAlpha);
+        float high = Mathf.Max(glowMinAlpha, glowMaxAlpha);
+        float duration = Mathf.Max(0.05f, glowPulseDuration);
+
+        if (glowLight != null)
+        {
+            glowLight.intensity = glowBaseIntensity * low;
+
+            glowTween = DOTween.To(() => glowLight.intensity,
+                                   value => glowLight.intensity = value,
+                                   glowBaseIntensity * high, duration)
+                               .SetEase(Ease.InOutSine)
+                               .SetLoops(-1, LoopType.Yoyo)
+                               .SetLink(gameObject);
+            return;
+        }
+
+        if (glowImage == null) return;
+
+        // Scaled by the image's own alpha, so a deliberately faint halo stays
+        // faint instead of being forced up to full opacity.
+        Color dim = glowBaseColor;
+        Color bright = glowBaseColor;
+        dim.a = glowBaseColor.a * low;
+        bright.a = glowBaseColor.a * high;
+
+        glowImage.color = dim;
+        glowTween = glowImage.DOColor(bright, duration)
+                             .SetEase(Ease.InOutSine)
+                             .SetLoops(-1, LoopType.Yoyo)
+                             .SetLink(glowImage.gameObject);
+    }
+
+    private void StopGlow()
+    {
+        glowTween?.Kill();
+        glowTween = null;
+
+        if (glowLight != null)
+        {
+            // Deselect() switches the light object off anyway; just hand its
+            // authored intensity back rather than leaving it mid-pulse.
+            glowLight.intensity = glowBaseIntensity;
+            return;
+        }
+
+        if (glowImage == null) return;
+
+        glowImage.color = glowBaseColor;
+    }
+
+    /// <summary>
+    /// The chip's visible art, for the dim/brighten tint and for the sprite the
+    /// flying chip borrows. Prefers the content object that already scales and
+    /// floats, since that is the chip face rather than the button's hit area.
+    /// Assigning chipImage in the Inspector overrides all of this.
+    /// </summary>
+    private Image ResolveChipImage()
+    {
+        if (contentTransform != null)
+        {
+            Image onContent = contentTransform.GetComponent<Image>();
+            if (onContent != null) return onContent;
+
+            Image inContent = contentTransform.GetComponentInChildren<Image>(true);
+            if (inContent != null) return inContent;
+        }
+
+        Image onSelf = GetComponent<Image>();
+        if (onSelf != null) return onSelf;
+
+        return GetComponentInChildren<Image>(true);
     }
 
     // �� Float / bob ���������������────────────────────────────────────────────
@@ -423,7 +570,7 @@ public class ChipButton : MonoBehaviour
         scaleTween?.Kill();
         floatTween?.Kill();
         dimTween?.Kill();
-        //glowTween?.Kill();
+        glowTween?.Kill();
         //ringTween?.Kill();
         
         /*if (lightRaysCoroutine != null)

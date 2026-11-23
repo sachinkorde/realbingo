@@ -80,6 +80,13 @@ public class AddCashManager : MonoBehaviour
         Instance = this;
     }
 
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
+    }
+
     private void Start()
     {
         SetupUI();
@@ -442,6 +449,11 @@ public class AddCashManager : MonoBehaviour
             WalletManager.Instance?.AddAmount(amount);
             
             ShowNotification($"{amount:N0} added successfully!");
+
+            // Popup disappears; the bell list keeps it. Dropped automatically
+            // when notifications are switched off in Settings.
+            NotificationManager.Instance?.AddNotification($"₹{amount:N0} added to wallet.");
+
             HapticManager.Success();
             OnTransactionComplete?.Invoke(true, amount);
 

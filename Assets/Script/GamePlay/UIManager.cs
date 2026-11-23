@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
     public TMP_Text resultText;
     public TMP_Text winningNumberText;
 
+    [Header("Withdraw Panel")]
+    public TMP_InputField addCashInputtext;
+    public TMP_InputField withdrawInputtext;
+    public TMP_InputField transferInputtext;
+
     [Header("Quotes Settings")]
     public string[] winningQuotes = { "WINNER!", "JACKPOT!", "YOU WON!" };
     public string[] losingQuotes = { "Try Again", "Better Luck!", "So Close!" };
@@ -84,6 +89,10 @@ public class UIManager : MonoBehaviour
     public bool useClearEffects = true;
     [Range(0.3f, 3f)] public float clearEffectScale = 1f;
 
+    [Tooltip("Chip flies from the selected chip to the slot it was bet on, then turns into the stake text.")]
+    public bool useChipFlight = true;
+    [Range(0.3f, 3f)] public float chipFlightScale = 1f;
+
     [Header("Win VFX (PRD Topic 6.5)")]
     [Tooltip("Firework burst over the result panel on a standard win.")]
     public bool useWinFirework = true;
@@ -129,6 +138,10 @@ public class UIManager : MonoBehaviour
         }
         Instance = this;
         //DontDestroyOnLoad(gameObject);
+
+        addCashInputtext.interactable = false;
+        withdrawInputtext.interactable = false;
+        transferInputtext.interactable = false;
     }
 
     private void Start()
@@ -143,7 +156,7 @@ public class UIManager : MonoBehaviour
             UpdateWalletUI(displayedWalletValue);
         }
 
-        //CacheChipButtons();
+        CacheChipButtons();
 
         //CloseAddCashPanel();
         CloseAllPanels();
@@ -319,14 +332,16 @@ public class UIManager : MonoBehaviour
 
     // ── Results ───────────────────────────────────────────────────────────────
 
-    // ── Results ───────────────────────────────────────────────────────────────
-
     /// <summary>
     /// Screen-wide gold coin cascade plus the 4-second heavy rumble — the 'J'
     /// jackpot celebration (PRD Topic 6.5 / 7.7).
     ///
-    /// Not called yet: the Joker slot does not exist in the wheel or the board.
-    /// Call this from the payout path the moment the 'J' result lands.
+    /// Called from ShowResult when a J result pays the player, which covers both
+    /// result paths (the server one and the legacy local one) since both land
+    /// there. Also safe to call directly.
+    ///
+    /// Both halves fail quiet: CoinShower no-ops without a UIEffects instance in
+    /// the scene, and Rumble respects the Vibration switch and device support.
     /// </summary>
     public void PlayJackpotCoinShower()
     {
@@ -354,7 +369,7 @@ public class UIManager : MonoBehaviour
 
         if (winningNumberText != null)
         {
-            winningNumberText.text = number.ToString();
+            winningNumberText.text = BetManager.Label(number);
             winningNumberText.transform.localScale = Vector3.zero;
             winningNumberText.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
         }
@@ -396,6 +411,16 @@ public class UIManager : MonoBehaviour
                 resultText.text = "0";
             }
         }
+
+        // The J jackpot, on top of the normal win celebration above (PRD Topic
+        // 6.5 / 7.7). Gated on winAmount so it marks the PLAYER'S jackpot: J
+        // landing with nothing staked on it is someone else's round, not a
+        // reason to cascade coins across this player's screen.
+        //
+        // Deliberately outside the resultText block: the celebration must not
+        // depend on that one Inspector reference being wired.
+        if (winAmount > 0 && BetManager.IsJoker(number))
+            PlayJackpotCoinShower();
     }
 
     // ── Wallet ────────────────────────────────────────────────────────────────
@@ -454,7 +479,66 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // ── Bet-clear VFX (PRD Topic 6.3) ─────────────────────────────────────────
+    // ── Bet VFX (PRD Topic 6.3) ─────────────────────────────────────────
+
+    /// <summary>
+    /// Called by BetManager the moment a stake lands on a slot. Throws the
+    /// selected chip across the board and punches that slot's counter when it
+    /// arrives, so the chip reads as turning into the number.
+    /// </summary>
+    public void PlayChipFlight(int number)
+    {
+        if (!useChipFlight) return;
+        if (numberButtons == null) return;
+        if (number < 0 || number >= numberButtons.Length) return;
+
+        NumberButton slot = numberButtons[number];
+        if (slot == null) return;
+
+        ChipButton source = FindSelectedChip();
+
+        // Nothing to throw from (no chip selected, or the tray is not wired):
+        // punch the counter anyway, so the stake still registers visually.
+        if (source == null)
+        {
+            slot.PunchAmount();
+            return;
+        }
+
+        Sprite sprite = source.chipImage != null ? source.chipImage.sprite : null;
+
+        UIEffects.ChipFlight(source.transform, slot.transform, sprite,
+                             chipFlightScale, slot.PunchAmount);
+    }
+
+    /// <summary>
+    /// The chip in the tray whose value is the one currently staked. Matched by
+    /// value rather than kept as state, so it stays correct however the chip was
+    /// chosen.
+    /// </summary>
+    private ChipButton FindSelectedChip()
+    {
+        if (GameManager.Instance == null || GameManager.Instance.betManager == null) return null;
+
+        // The tray is assigned in the Inspector; fall back to a scene lookup so
+        // the effect still works if that reference was never filled in.
+        if (chipButtons == null || chipButtons.Length == 0)
+        {
+            chipButtons = FindObjectsByType<ChipButton>(FindObjectsInactive.Include,
+                                                        FindObjectsSortMode.None);
+        }
+
+        if (chipButtons == null) return null;
+
+        long staked = GameManager.Instance.betManager.currentChipValue;
+
+        foreach (ChipButton chip in chipButtons)
+        {
+            if (chip != null && chip.chipValue == staked) return chip;
+        }
+
+        return null;
+    }
 
     /// <summary>
     /// Smoke/dust poof over one betting slot — the Undo command clearing a
@@ -624,18 +708,29 @@ public class UIManager : MonoBehaviour
         if (!state && deselectChipsOnLock) ChipButton.ClearAllSelections();
     }
 
-    /*private void CacheChipButtons()
+    /// <summary>
+    /// Collects every chip in the scene, replacing whatever the Inspector array
+    /// holds.
+    ///
+    /// That array is a footgun: add a chip to the tray and forget to drag it in,
+    /// and it silently never locks when betting closes — the lock loop walks the
+    /// array, not the scene. One search per scene load removes the problem for
+    /// good, and it is why the 5000 chip needs no wiring here.
+    /// </summary>
+    private void CacheChipButtons()
     {
-        if (bettingPanelGroup != null)
-        {
-            chipButtons = bettingPanelGroup.GetComponentsInChildren<ChipButton>(true);
-        }
+        ChipButton[] found = null;
 
-        if (chipButtons == null || chipButtons.Length == 0)
-        {
-            chipButtons = FindObjectsByType<ChipButton>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        }
-    }*/
+        if (bettingPanelGroup != null)
+            found = bettingPanelGroup.GetComponentsInChildren<ChipButton>(true);
+
+        if (found == null || found.Length == 0)
+            found = FindObjectsByType<ChipButton>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        // Only overwrite with something real: a scene mid-load must not wipe a
+        // perfectly good Inspector assignment.
+        if (found != null && found.Length > 0) chipButtons = found;
+    }
 
     private void SetChipButtonsInteractable(bool state)
     {
@@ -805,6 +900,9 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
         // FIX-UI-03: Kill tweens to avoid memory leaks / callbacks on dead objects
         warningFlashTween?.Kill();
         statusPulseTween?.Kill();

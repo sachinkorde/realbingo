@@ -1751,6 +1751,7 @@ MonoBehaviour:
   buttonTemplate: {fileID: 1875173808}
   buttonContainer: {fileID: 358286984}
   confirmButton: {fileID: 0}
+  closeButton: {fileID: 0}
   selectedColor: {r: 0.25, g: 0.8, b: 0.4, a: 1}
   unselectedColor: {r: 1, g: 1, b: 1, a: 1}
   fadeSeconds: 0.25
@@ -13590,6 +13591,21 @@ MonoBehaviour:
     volume: 1
     pitch: 0.5
     loop: 0
+  - key: Win
+    clip: {fileID: 8300000, guid: fab580335b189d7428888ce08e6b55a8, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+  - key: Lose
+    clip: {fileID: 8300000, guid: 3f82bb8b63cbae54cad6ccbd9e0b191a, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
+  - key: BetClosed
+    clip: {fileID: 8300000, guid: e9f5cfbc78c61424fab27f13ddec7893, type: 3}
+    volume: 1
+    pitch: 0
+    loop: 0
   masterVolume: 1
   musicVolume: 0.7
   sfxVolume: 1
@@ -14566,7 +14582,7 @@ GameObject:
   - component: {fileID: 1339665496}
   - component: {fileID: 1339665495}
   m_Layer: 0
-  m_Name: APIMAnager
+  m_Name: APIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

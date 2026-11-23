@@ -183,6 +183,9 @@ public class ProfileManager : MonoBehaviour
 
     private void OnDestroy()
     {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
         // Kill all DOTween animations on this object to prevent leaks
         DOTween.Kill(panel1);
         DOTween.Kill(panel2);
@@ -300,6 +303,7 @@ public class ProfileManager : MonoBehaviour
 
         APIManager.Instance.GetProfile((success, profileData, responseCode) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             Debug.Log($"Callback received - Success: {success}");
             HideLoading();
 
@@ -463,6 +467,7 @@ public class ProfileManager : MonoBehaviour
 
         APIManager.Instance.GetBankDetails( (success, BankData) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             Debug.Log($"Callback received - Success: {success}");
             HideLoading();
 
@@ -969,11 +974,18 @@ public class ProfileManager : MonoBehaviour
             ShowLoading();
             APIManager.Instance?.Logout((success, message) =>
             {
+                if (this == null) return;   // scene unloaded while the request was in flight
                 HideLoading();
                 if (success)
                 {
                     PlayerPrefs.SetInt(UIManagerMenu.FIRST_LOGIN_KEY, 1);
                     PlayerPrefs.Save();
+
+                    // Stop the game BGM now rather than when the menu finishes
+                    // loading, so logout is silent from the tap onwards.
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.ResetPlayback();
+
                     UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
                 }
                 else
@@ -992,11 +1004,18 @@ public class ProfileManager : MonoBehaviour
             ShowLoading();
             APIManager.Instance?.LogoutAll((success, message) =>
             {
+                if (this == null) return;   // scene unloaded while the request was in flight
                 HideLoading();
                 if (success)
                 {
                     PlayerPrefs.SetInt(UIManagerMenu.FIRST_LOGIN_KEY, 1);
                     PlayerPrefs.Save();
+
+                    // Stop the game BGM now rather than when the menu finishes
+                    // loading, so logout is silent from the tap onwards.
+                    if (AudioManager.Instance != null)
+                        AudioManager.Instance.ResetPlayback();
+
                     UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
                 }
                 else
@@ -1034,6 +1053,7 @@ public class ProfileManager : MonoBehaviour
             pendingProfileImage, pendingAdharDoc, pendingPanDoc,
             (success, message) =>
             {
+                if (this == null) return;   // scene unloaded while the request was in flight
                 HideLoading();
 
                 if (success)

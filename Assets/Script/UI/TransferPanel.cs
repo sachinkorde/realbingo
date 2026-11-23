@@ -166,6 +166,7 @@ public class TransferPanel : MonoBehaviour
 
             APIManager.Instance.TransferMoney(recipient, amount, (sendOk, sendMessage, transferData) =>
             {
+                if (this == null) return;   // scene unloaded while the request was in flight
                 requestRunning = false;
 
                 if (!sendOk)
@@ -185,6 +186,11 @@ public class TransferPanel : MonoBehaviour
                     : recipientData.name;
 
                 ShowSuccess($"Sent {amount:N0} to {sentTo}.");
+
+                // A Toast is gone in a few seconds. Money leaving the wallet is
+                // worth a record the player can scroll back to — dropped
+                // automatically when notifications are switched off in Settings.
+                NotificationManager.Instance?.AddNotification($"Transferred ₹{amount:N0} to {sentTo}.");
 
                 if (amountInput != null) amountInput.text = "";
                 if (recipientInput != null) recipientInput.text = "";

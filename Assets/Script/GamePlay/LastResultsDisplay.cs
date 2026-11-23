@@ -93,7 +93,7 @@ public class LastResultsDisplay : MonoBehaviour
             if (resultsTextList[boxIndex] == null) continue;
 
             bool hasValue = results != null && i < results.Count;
-            resultsTextList[boxIndex].text = hasValue ? results[i].ToString() : "";
+            resultsTextList[boxIndex].text = hasValue ? BetManager.Label(results[i]) : "";
         }
 
         bool hasResults = results != null && results.Count > 0;

@@ -49,6 +49,13 @@ public class OTPTimerHandler : MonoBehaviour
         //DontDestroyOnLoad(gameObject);
     }
 
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
+    }
+
     public void StartOTPTimerOnRegister()
     {
         // 1. Basic Empty Check

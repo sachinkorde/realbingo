@@ -123,6 +123,84 @@ public float spinAudioFadeOutDuration = 0.45f;
         {
             degreesPerPeg = 360f / angleSettings.Count;
         }
+
+        ValidateWedges();
+    }
+
+    /// <summary>
+    /// Sanity-checks Angle Settings once at startup.
+    ///
+    /// Swapping the wheel art means re-typing this list by hand, and the three
+    /// ways it goes wrong are all silent at runtime: a name that matches no bet
+    /// target, the same name twice, or a range entered backwards. Each one makes
+    /// the wheel stop on the wrong number, which in a money game is the worst
+    /// kind of bug to find late. Say it here instead.
+    /// </summary>
+    private void ValidateWedges()
+    {
+        if (angleSettings == null || angleSettings.Count == 0)
+        {
+            Debug.LogWarning("[SpinManager] Angle Settings is empty — the wheel cannot land anywhere.", this);
+            return;
+        }
+
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (NumberAngle wedge in angleSettings)
+        {
+            if (wedge == null) continue;
+
+            string wedgeName = string.IsNullOrWhiteSpace(wedge.name) ? "" : wedge.name.Trim();
+
+            if (wedgeName.Length == 0)
+            {
+                Debug.LogWarning("[SpinManager] A wedge has no Name. Name it after the number it " +
+                                 "covers (\"0\"-\"9\", or \"J\"), or the wheel can never pick it.", this);
+                continue;
+            }
+
+            if (!seen.Add(wedgeName))
+            {
+                Debug.LogWarning($"[SpinManager] Two wedges are both named \"{wedgeName}\". The first " +
+                                 "one always wins the lookup, so the other is unreachable.", this);
+            }
+
+            if (wedge.endAngle <= wedge.startAngle)
+            {
+                Debug.LogWarning($"[SpinManager] Wedge \"{wedgeName}\" has End Angle {wedge.endAngle} " +
+                                 $"at or below Start Angle {wedge.startAngle}. A wedge that crosses 0 " +
+                                 "should keep going past 360 (as \"J\" does: 343.3 -> 378.3).", this);
+            }
+        }
+
+        // 0-9 always exist. The Joker only does when the board offers it, so ask
+        // the board rather than assuming — swap back to a plain 0-9 wheel and
+        // this must not nag about a wedge it is right not to have.
+        bool boardHasJoker = false;
+
+        foreach (NumberButton slot in FindObjectsByType<NumberButton>(
+                     FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (slot != null && BetManager.IsJoker(slot.myNumber))
+            {
+                boardHasJoker = true;
+                break;
+            }
+        }
+
+        int highestTarget = boardHasJoker ? BetManager.JokerNumber : 9;
+
+        for (int number = 0; number <= highestTarget; number++)
+        {
+            // 10 is the Joker's index, and nothing sits between 9 and it.
+            if (number > 9 && !BetManager.IsJoker(number)) continue;
+
+            string wanted = BetManager.Label(number);
+            if (seen.Contains(wanted)) continue;
+
+            Debug.LogWarning($"[SpinManager] The board can take a bet on {wanted}, but no wedge is " +
+                             $"named \"{wanted}\" — a win there cannot be shown on the wheel.", this);
+        }
     }
 
     /*private void Update()
@@ -136,6 +214,37 @@ public float spinAudioFadeOutDuration = 0.45f;
         }
     }*/
 
+    /// <summary>
+    /// The wheel wedge for a bet target, found by NAME — "J" for the Joker,
+    /// otherwise the digit. Matching on the name rather than the position means
+    /// the wheel keeps landing correctly whatever order the wedges are listed in
+    /// and whichever ones exist, so inserting J no longer shifts every number.
+    ///
+    /// Names are trimmed and compared case-insensitively, so "j" or " J " from
+    /// the Inspector still match.
+    /// </summary>
+    private int FindWedgeIndex(int number)
+    {
+        string wanted = BetManager.Label(number);   // "0".."9", or "J"
+
+        for (int i = 0; i < angleSettings.Count; i++)
+        {
+            NumberAngle wedge = angleSettings[i];
+            if (wedge == null || string.IsNullOrWhiteSpace(wedge.name)) continue;
+
+            if (string.Equals(wedge.name.Trim(), wanted, StringComparison.OrdinalIgnoreCase))
+                return i;
+        }
+
+        // No wedge carries that name. Fall back to the old positional behaviour
+        // so the wheel still stops somewhere rather than throwing, but say so —
+        // a silent miss here means the wheel lands on the wrong number.
+        Debug.LogWarning($"[SpinManager] No wheel wedge named \"{wanted}\" in Angle Settings. " +
+                         $"Falling back to index {number}, which is probably the wrong wedge.", this);
+
+        return Mathf.Clamp(number, 0, angleSettings.Count - 1);
+    }
+
     public void StartSpin(int targetIndex, float duration, Action onComplete)
     {
         Application.targetFrameRate = 60;
@@ -145,8 +254,16 @@ public float spinAudioFadeOutDuration = 0.45f;
         isSpinning = true;
         spinTween?.Kill();
 
-        targetIndex = Mathf.Clamp(targetIndex, 0, angleSettings.Count - 1);
-        NumberAngle targetWedge = angleSettings[targetIndex];
+        // The winning number is a NUMBER, not a position in this list. Those used
+        // to be the same thing, because the list held 0-9 in that order. Adding
+        // the Joker put "J" first, so index 4 is now the wedge named "3", and the
+        // Joker (10) clamped onto "9" — every result landed one wedge out.
+        //
+        // OLD (right only while the list was exactly 0-9, in order):
+        // targetIndex = Mathf.Clamp(targetIndex, 0, angleSettings.Count - 1);
+        // NumberAngle targetWedge = angleSettings[targetIndex];
+        int wedgeIndex = FindWedgeIndex(targetIndex);
+        NumberAngle targetWedge = angleSettings[wedgeIndex];
         float landingAngle = Random.Range(targetWedge.startAngle + 2f, targetWedge.endAngle - 2f);
 
         float currentZ = wheelTransform.localEulerAngles.z;
@@ -171,7 +288,9 @@ public float spinAudioFadeOutDuration = 0.45f;
         float totalSpinDegrees = Mathf.Abs(finalAbsoluteZTarget - currentZ);
         float expectedMaxAngularSpeed = Mathf.Max(1f, totalSpinDegrees / Mathf.Max(finalDuration, 0.01f) * 1.8f);
 
-        Debug.Log($"Final Duration: {finalDuration:F2}s, Rounds: {rounds}, Target Angle: {landingAngle:F2} deg, Final Z Target: {finalAbsoluteZTarget:F2} deg");
+        Debug.Log($"Spin -> wedge \"{targetWedge.name}\" (number {targetIndex}, index {wedgeIndex}) | " +
+                  $"Duration: {finalDuration:F2}s, Rounds: {rounds}, Target Angle: {landingAngle:F2} deg, " +
+                  $"Final Z Target: {finalAbsoluteZTarget:F2} deg");
 
         HideWinnerHighlight();
         StartPerspectiveZoom();

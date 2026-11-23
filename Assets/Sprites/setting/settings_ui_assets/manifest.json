@@ -1,0 +1,497 @@
+{
+  "screen": "Settings UI",
+  "format": "PNG",
+  "assets": [
+    {
+      "file": "settings_outer_frame.png",
+      "size_px": [
+        855,
+        410
+      ],
+      "source_sheet_crop": [
+        0,
+        0,
+        855,
+        410
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_inner_panel.png",
+      "size_px": [
+        825,
+        180
+      ],
+      "source_sheet_crop": [
+        20,
+        420,
+        845,
+        600
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_header_plate.png",
+      "size_px": [
+        540,
+        125
+      ],
+      "source_sheet_crop": [
+        920,
+        15,
+        1460,
+        140
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_language_container.png",
+      "size_px": [
+        655,
+        390
+      ],
+      "source_sheet_crop": [
+        870,
+        140,
+        1525,
+        530
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_row_bg_1.png",
+      "size_px": [
+        650,
+        85
+      ],
+      "source_sheet_crop": [
+        875,
+        145,
+        1525,
+        230
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_row_bg_2.png",
+      "size_px": [
+        650,
+        90
+      ],
+      "source_sheet_crop": [
+        875,
+        250,
+        1525,
+        340
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_row_bg_3.png",
+      "size_px": [
+        650,
+        90
+      ],
+      "source_sheet_crop": [
+        875,
+        345,
+        1525,
+        435
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "settings_row_bg_4.png",
+      "size_px": [
+        650,
+        90
+      ],
+      "source_sheet_crop": [
+        875,
+        440,
+        1525,
+        530
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_button_active.png",
+      "size_px": [
+        150,
+        110
+      ],
+      "source_sheet_crop": [
+        20,
+        610,
+        170,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_button_inactive_1.png",
+      "size_px": [
+        140,
+        100
+      ],
+      "source_sheet_crop": [
+        175,
+        610,
+        315,
+        710
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_button_inactive_2.png",
+      "size_px": [
+        145,
+        100
+      ],
+      "source_sheet_crop": [
+        320,
+        610,
+        465,
+        710
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_button_inactive_3.png",
+      "size_px": [
+        150,
+        100
+      ],
+      "source_sheet_crop": [
+        470,
+        610,
+        620,
+        710
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_button_inactive_4.png",
+      "size_px": [
+        150,
+        100
+      ],
+      "source_sheet_crop": [
+        625,
+        610,
+        775,
+        710
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "language_icon.png",
+      "size_px": [
+        115,
+        115
+      ],
+      "source_sheet_crop": [
+        795,
+        605,
+        910,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "push_alarm_icon.png",
+      "size_px": [
+        105,
+        115
+      ],
+      "source_sheet_crop": [
+        915,
+        605,
+        1020,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "sound_fx_icon_inactive.png",
+      "size_px": [
+        85,
+        115
+      ],
+      "source_sheet_crop": [
+        1020,
+        605,
+        1105,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "sound_fx_icon_active.png",
+      "size_px": [
+        95,
+        115
+      ],
+      "source_sheet_crop": [
+        1105,
+        605,
+        1200,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "music_icon.png",
+      "size_px": [
+        110,
+        115
+      ],
+      "source_sheet_crop": [
+        1200,
+        605,
+        1310,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "music_muted_icon.png",
+      "size_px": [
+        95,
+        115
+      ],
+      "source_sheet_crop": [
+        1310,
+        605,
+        1405,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "vibration_icon_inactive.png",
+      "size_px": [
+        90,
+        115
+      ],
+      "source_sheet_crop": [
+        1400,
+        605,
+        1490,
+        720
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "gear_icon.png",
+      "size_px": [
+        140,
+        125
+      ],
+      "source_sheet_crop": [
+        1235,
+        710,
+        1375,
+        835
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "close_button.png",
+      "size_px": [
+        145,
+        115
+      ],
+      "source_sheet_crop": [
+        1390,
+        715,
+        1535,
+        830
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "switch_track_off.png",
+      "size_px": [
+        200,
+        95
+      ],
+      "source_sheet_crop": [
+        20,
+        735,
+        220,
+        830
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "switch_track_on.png",
+      "size_px": [
+        195,
+        95
+      ],
+      "source_sheet_crop": [
+        225,
+        735,
+        420,
+        830
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "switch_track_purple.png",
+      "size_px": [
+        170,
+        90
+      ],
+      "source_sheet_crop": [
+        430,
+        735,
+        600,
+        825
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "switch_track_gold.png",
+      "size_px": [
+        200,
+        90
+      ],
+      "source_sheet_crop": [
+        600,
+        735,
+        800,
+        825
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "switch_thumb.png",
+      "size_px": [
+        110,
+        90
+      ],
+      "source_sheet_crop": [
+        815,
+        735,
+        925,
+        825
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "volume_ticks_active.png",
+      "size_px": [
+        250,
+        90
+      ],
+      "source_sheet_crop": [
+        50,
+        840,
+        300,
+        930
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "volume_ticks_inactive.png",
+      "size_px": [
+        225,
+        90
+      ],
+      "source_sheet_crop": [
+        300,
+        840,
+        525,
+        930
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "volume_track_active_sample.png",
+      "size_px": [
+        250,
+        90
+      ],
+      "source_sheet_crop": [
+        50,
+        840,
+        300,
+        930
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "volume_track_inactive_sample.png",
+      "size_px": [
+        225,
+        90
+      ],
+      "source_sheet_crop": [
+        300,
+        840,
+        525,
+        930
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "volume_slider_thumb_sample.png",
+      "size_px": [
+        100,
+        90
+      ],
+      "source_sheet_crop": [
+        825,
+        735,
+        925,
+        825
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "gold_glow_streak.png",
+      "size_px": [
+        610,
+        55
+      ],
+      "source_sheet_crop": [
+        25,
+        950,
+        635,
+        1005
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "purple_glow_streak.png",
+      "size_px": [
+        680,
+        55
+      ],
+      "source_sheet_crop": [
+        700,
+        950,
+        1380,
+        1005
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    },
+    {
+      "file": "check_badge.png",
+      "size_px": [
+        110,
+        120
+      ],
+      "source_sheet_crop": [
+        1390,
+        835,
+        1500,
+        955
+      ],
+      "note": "Cropped from generated asset sheet; background/glow pixels may remain."
+    }
+  ],
+  "important_note": "The generated sheet did not produce true transparent cutouts. Individual crops are separated but may retain background gradients/glow. Review and alpha-clean before production use."
+}

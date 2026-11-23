@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +52,22 @@ public class NumberButton : MonoBehaviour
     public void SetAmount(long amt)
     {
         amountText.text = amt > 0 ? amt.ToString() : "";
+    }
+
+    /// <summary>
+    /// Quick scale punch on the stake text, fired the instant a flying chip
+    /// lands here. The chip dissolves on the same frame, so the two together
+    /// read as the chip turning into the number (PRD Topic 6.3).
+    /// </summary>
+    public void PunchAmount()
+    {
+        if (amountText == null) return;
+
+        Transform t = amountText.transform;
+
+        t.DOKill();
+        t.localScale = Vector3.one;
+        t.DOPunchScale(Vector3.one * 0.35f, 0.25f, 6, 0.6f).SetLink(gameObject);
     }
 
     /// <summary>

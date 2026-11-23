@@ -51,6 +51,17 @@ public class ReferAndEarnPanel : MonoBehaviour
         if (copyCodeButton != null) copyCodeButton.onClick.AddListener(OnCopyCode);
         if (shareButton != null) shareButton.onClick.AddListener(OnShare);
         if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
+
+        // The panel is a full-screen dimmer on its own canvas at sorting order 10,
+        // and the scene is saved with it switched ON so it can be worked on in the
+        // editor. Nothing switches it off at runtime: UIManager.CloseAllPanels only
+        // walks AddCash's parent, which this is not a child of. Without this line
+        // the game opens behind a dark overlay with the referral popup on top of it.
+        // OpenPanel is the only thing that should ever show it.
+        //
+        // This script lives on its own always-active root object, so Awake runs here
+        // even while panelParent itself is active.
+        if (panelParent != null) panelParent.SetActive(false);
     }
 
     /// <summary>Wire this to the "Refer & Earn" menu button.</summary>
@@ -80,6 +91,7 @@ public class ReferAndEarnPanel : MonoBehaviour
 
         APIManager.Instance.GetReferralSummary((ok, message, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             SetLoading(false);
 
             if (!ok || data == null)

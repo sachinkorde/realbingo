@@ -1,9 +1,32 @@
+using RealBingo.Localization;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
 public class BetManager : MonoBehaviour
 {
+    /// <summary>
+    /// Bet target for the Joker. The numbers are 0-9, so 10 is the first free
+    /// index: this keeps every bet map, UI array and highlight path int-keyed
+    /// instead of pushing a string key through the whole game for one target.
+    ///
+    /// It is only ever a number internally. On the wire it becomes "j" (see
+    /// WireKey) and on screen it reads "J" (see Label).
+    /// </summary>
+    public const int JokerNumber = 10;
+
+    public static bool IsJoker(int number) => number == JokerNumber;
+
+    /// <summary>What the player sees for a bet target: "0".."9", or "J".</summary>
+    public static string Label(int number) => IsJoker(number) ? "J" : number.ToString();
+
+    /// <summary>
+    /// The key this target uses in the place-bid payload. The backend expects
+    /// the Joker as the string "j" alongside the numeric keys:
+    ///     [{"j":100,"0":50,"1":20}]
+    /// </summary>
+    public static string WireKey(int number) => IsJoker(number) ? "j" : number.ToString();
+
     [SerializeField] private List<BetInfo> currentBetHistory = new List<BetInfo>();
     [SerializeField] private string numberBetSoundKey = "UIButtonClick";
 
@@ -20,6 +43,15 @@ public class BetManager : MonoBehaviour
         if (currentChipValue <= 0) return false;
         if (!GameManager.Instance.CanBet()) return false;
 
+        // Every chip goes on every target, J included: the 5000 chip is a regular
+        // chip, not a Joker-only one. There used to be an exclusive-pair rule here
+        // (5000 only on J, J only taking 5000) which made the 5000 chip unplaceable
+        // anywhere else and J unreachable with any other stake.
+        //
+        // The Joker is still special where it actually matters: it pays at its own
+        // rate (GameManager.jokerPayoutMultiplier) and goes to the backend as "j"
+        // (see WireKey). What it is NOT is restricted in what you may stake on it.
+
         if (GameManager.Instance.walletManager.TryDeduct(currentChipValue))
         {
             currentBetHistory.Add(new BetInfo { number = number, value = currentChipValue });
@@ -31,6 +63,13 @@ public class BetManager : MonoBehaviour
             HapticManager.Medium();   // real money left the wallet — make it felt
 
             OnBetPlaced?.Invoke(number);
+
+            // The slot's own listener has just written the stake text. Now throw
+            // the chip at it and punch the number on impact, so the chip reads as
+            // becoming the text instead of stacking on the board (PRD Topic 6.3:
+            // nothing stays rendered after the hit).
+            UIManager.Instance?.PlayChipFlight(number);
+
             OnTotalBetChanged?.Invoke();
             return true;
         }
@@ -123,7 +162,7 @@ public class BetManager : MonoBehaviour
 
         if (atLeastOnePlaced)
         {
-            PlaySound("ChipPlace");
+            PlaySound("PlaceBet");
             HapticManager.Heavy();    // a whole board of bets re-placed at once
             OnTotalBetChanged?.Invoke();
         }

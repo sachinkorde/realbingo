@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Audio Settings")]
     public string gameBgSoundKey = "BGM_Game";
+
+    [Tooltip("The Joker pays more than a plain number (PRD Topic 8: 20x against 9x). Used by the LOCAL result path only — when the server answers, its payout is the one that counts.")]
+    public int jokerPayoutMultiplier = 20;
     public float gameBgRestartCheckInterval = 1f;
 
     [Header("Payout Settings")]
@@ -84,6 +87,13 @@ public class GameManager : MonoBehaviour
         {
             gameBgSoundKey = "BGM_Game";
         }
+    }
+
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
     }
 
     private void Start()
@@ -313,7 +323,10 @@ public class GameManager : MonoBehaviour
     private void CalculateWinnings(int winningNumber)
     {
         long betAmount = betManager.GetTotalBetOnNumber(winningNumber);
-        long winAmount = betAmount * payoutMultiplier;
+
+        // The Joker is not just another number: it pays at its own rate.
+        int multiplier = BetManager.IsJoker(winningNumber) ? jokerPayoutMultiplier : payoutMultiplier;
+        long winAmount = betAmount * multiplier;
 
         if (winAmount > 0)
         {
@@ -413,6 +426,7 @@ public class GameManager : MonoBehaviour
 
         APIManager.Instance.GetCurrentRound((success, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             done = true;
             if (success && data != null)
             {
@@ -503,6 +517,7 @@ public class GameManager : MonoBehaviour
         // One call per session: fetch the winning number + slot id, then spin.
         APIManager.Instance.GetCurrentRound((ok, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (!ok || data == null)
             {
                 // Warn once per round, not on every retry tick, or a slow
@@ -580,6 +595,7 @@ public class GameManager : MonoBehaviour
 
         APIManager.Instance.PlaceBid(currentSlotNo, bids, (ok, msg, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (ok)
             {
                 RefreshServerBalance();
@@ -609,6 +625,7 @@ public class GameManager : MonoBehaviour
     {
         APIManager.Instance.GetRoundResult(slotId, (ok, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             int winner = (ok && data != null) ? data.winning_number : fallbackWinner;
 
             long winAmount = 0;
@@ -661,6 +678,7 @@ public class GameManager : MonoBehaviour
 
             APIManager.Instance.GetRoundHistory((ok, list) =>
             {
+                if (this == null) return;   // scene unloaded while the request was in flight
                 done = true;
                 if (!ok || list == null) return;
 
@@ -694,6 +712,7 @@ public class GameManager : MonoBehaviour
         if (APIManager.Instance == null || walletManager == null) return;
         APIManager.Instance.GetWalletBalance((ok, balance) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (ok) walletManager.SetBalanceFromServer(balance);
         });
     }

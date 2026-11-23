@@ -101,6 +101,7 @@ public class VersionChecker : MonoBehaviour
 
         APIManager.Instance.GetAppVersion((ok, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             // A failed check must NEVER block play. If the server is
             // unreachable or the response is malformed, the player keeps
             // playing on the build they have — locking people out because of

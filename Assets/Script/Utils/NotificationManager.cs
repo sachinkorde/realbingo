@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using System;
+
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+using Unity.Notifications;
+#endif
 
 // 1. Data model for a single notification
 [Serializable]
@@ -22,6 +27,27 @@ public class NotificationSaveData
 public class NotificationManager : MonoBehaviour
 {
     public static NotificationManager Instance;
+
+    private const string ENABLED_KEY = "NotificationsEnabled";
+
+    /// <summary>
+    /// The player's notification switch in Settings. It lives here rather than in
+    /// the panel so the preference outlives whichever screen last touched it, and
+    /// so AddNotification can honour it without knowing any UI exists. Mirrors
+    /// HapticManager.Enabled.
+    ///
+    /// Prefer <see cref="SetEnabled"/> from UI: it also deals with the badge, the
+    /// OS permission prompt and any reminders already queued on the device.
+    /// </summary>
+    public static bool Enabled
+    {
+        get => PlayerPrefs.GetInt(ENABLED_KEY, 1) == 1;
+        set
+        {
+            PlayerPrefs.SetInt(ENABLED_KEY, value ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+    }
 
     [Header("Scroll View Settings")]
     [Tooltip("The 'Content' GameObject inside your Scroll View")]
@@ -48,11 +74,67 @@ public class NotificationManager : MonoBehaviour
         }
         Instance = this;
         LoadNotifications();
+        InitializeDeviceNotifications();
+    }
+
+    private void Start()
+    {
+        // Already opted in from a previous run (or a fresh install, which
+        // defaults to on): make sure the OS actually lets us post, otherwise the
+        // switch says "on" while Android silently drops everything.
+        if (Enabled) RequestDevicePermission();
+    }
+
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
+    }
+
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused) ScheduleComeBackReminders();
+        else CancelDeviceReminders();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ScheduleComeBackReminders();
+    }
+
+    // ── The Settings switch ──────────────────────────────────────────────────
+
+    /// <summary>
+    /// The single entry point for the Settings switch: stores the preference,
+    /// brings the badge in line, asks the OS for permission when switching on,
+    /// and clears anything already queued on the device when switching off.
+    /// </summary>
+    public void SetEnabled(bool enabled)
+    {
+        Enabled = enabled;
+
+        if (enabled)
+        {
+            RequestDevicePermission();
+        }
+        else
+        {
+            // A player who just switched these off should not get a reminder
+            // tomorrow from something queued before they did.
+            CancelDeviceReminders();
+        }
+
+        UpdateBadge();
     }
 
     // Call this to push a new notification to the phone's memory
     public void AddNotification(string msg)
     {
+        // Switched off in Settings: drop it rather than badge a player who
+        // asked not to be told.
+        if (!Enabled) return;
+
         NotificationData newNotif = new NotificationData
         {
             message = msg,
@@ -105,6 +187,14 @@ public class NotificationManager : MonoBehaviour
 
     public void UpdateBadge()
     {
+        // Switched off in Settings: no badge either. Leaving the red dot up after
+        // the player turned notifications off is the same nag they just declined.
+        if (!Enabled)
+        {
+            if (badgeObject != null) badgeObject.SetActive(false);
+            return;
+        }
+
         int unreadCount = 0;
         foreach (var n in saveData.notifications)
         {
@@ -152,5 +242,134 @@ public class NotificationManager : MonoBehaviour
 
         SaveNotifications(); // Save the "Read" status
         UpdateBadge(); // Hide the badge
+    }
+
+    // ── Device (OS) notifications ────────────────────────────────────────────
+    //
+    // The in-app list above is what the player sees while the game is open. These
+    // are the ones the phone shows when it is not. Both answer to the same
+    // Settings switch, so "Notification: off" means off everywhere.
+    //
+    // Everything here is compiled out on desktop and in the Editor: the Mobile
+    // Notifications package only has a real implementation on a device, and the
+    // Editor would otherwise log channel errors on every play.
+
+    [Header("Device Reminders")]
+    [Tooltip("Reminder sent this many hours after the player leaves the game. 0 disables it.")]
+    [SerializeField] private float firstReminderHours = 4f;
+
+    [Tooltip("Second reminder, for a player who did not come back. 0 disables it.")]
+    [SerializeField] private float secondReminderHours = 24f;
+
+    [Tooltip("Shown on the first device reminder.")]
+    [SerializeField] private string firstReminderTitle = "Real Bingo";
+    [SerializeField] private string firstReminderText = "A new round is waiting for you.";
+
+    [Tooltip("Shown on the second device reminder.")]
+    [SerializeField] private string secondReminderTitle = "Real Bingo";
+    [SerializeField] private string secondReminderText = "Your table is still open — come back and play.";
+
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+    private const string ChannelId = "realbingo_general";
+    private static bool deviceCenterReady;
+    private Coroutine permissionRoutine;
+#endif
+
+    private void InitializeDeviceNotifications()
+    {
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+        if (deviceCenterReady) return;
+
+        var args = NotificationCenterArgs.Default;
+        args.AndroidChannelId = ChannelId;
+        args.AndroidChannelName = "Game updates";
+        args.AndroidChannelDescription = "Round reminders and wallet updates.";
+
+        NotificationCenter.Initialize(args);
+        deviceCenterReady = true;
+#endif
+    }
+
+    /// <summary>
+    /// Asks the OS for permission to post. Android 13+ and every iOS version
+    /// require this; without it the switch would read "on" while nothing is ever
+    /// delivered. Repeat calls are cheap — the OS answers from its own record
+    /// once the player has already decided.
+    /// </summary>
+    private void RequestDevicePermission()
+    {
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+        InitializeDeviceNotifications();
+
+        if (permissionRoutine != null) return;
+        permissionRoutine = StartCoroutine(RequestDevicePermissionRoutine());
+#endif
+    }
+
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+    private IEnumerator RequestDevicePermissionRoutine()
+    {
+        var request = NotificationCenter.RequestPermission();
+        yield return request;
+
+        permissionRoutine = null;
+
+        if (request.Status != NotificationsPermissionStatus.Granted)
+        {
+            Debug.Log($"[Notifications] device permission not granted ({request.Status}); " +
+                      "in-app notifications still work, the phone will not show any.");
+        }
+    }
+#endif
+
+    /// <summary>
+    /// Queues the "come back" reminders as the player leaves. Called on pause and
+    /// on quit, and always clears the queue first so backgrounding the game twice
+    /// does not stack two sets of the same reminder.
+    /// </summary>
+    private void ScheduleComeBackReminders()
+    {
+        CancelDeviceReminders();
+
+        if (!Enabled) return;
+
+        ScheduleReminder(firstReminderHours, firstReminderTitle, firstReminderText);
+        ScheduleReminder(secondReminderHours, secondReminderTitle, secondReminderText);
+    }
+
+    private void ScheduleReminder(float hoursFromNow, string title, string text)
+    {
+        if (hoursFromNow <= 0f || string.IsNullOrEmpty(text)) return;
+
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+        var notification = new Notification
+        {
+            Title = title,
+            Text = text,
+            ShowInForeground = false,   // they are reminders for a closed app
+        };
+
+        NotificationCenter.ScheduleNotification(
+            notification,
+            new NotificationIntervalSchedule(TimeSpan.FromHours(hoursFromNow)));
+#endif
+    }
+
+    /// <summary>Drops every reminder still queued on the device.</summary>
+    private void CancelDeviceReminders()
+    {
+#if (UNITY_ANDROID || UNITY_IOS) && !UNITY_EDITOR
+        if (!deviceCenterReady) return;
+
+        NotificationCenter.CancelAllScheduledNotifications();
+
+        // Switched off: clear what already landed in the shade too, and the
+        // springboard badge with it.
+        if (!Enabled)
+        {
+            NotificationCenter.CancelAllDeliveredNotifications();
+            NotificationCenter.ClearBadge();
+        }
+#endif
     }
 }

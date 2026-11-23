@@ -1,142 +1,17 @@
 using System;
 using System.Collections.Generic;
-using DG.Tweening;
-using TMPro;
+using RealBingo.Localization;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
-/// One Q/A row inside a FAQAccordion. Tapping the header expands/collapses the
-/// answer with a smooth height tween instead of an abrupt SetActive, so it
-/// reads as intentional rather than glitchy on a low-end Android device.
+/// One question and its answer.
 ///
-/// PREFAB SETUP (build this once, the accordion instantiates it per question):
-///   Row (this component)
-///   ├─ Header (Button)              -> wire to `header`
-///   │   └─ QuestionText (TMP_Text)  -> wire to `questionText`
-///   ├─ Arrow (Image, optional)      -> wire to `arrow` — rotates 180° when open
-///   └─ Body (RectTransform)         -> wire to `body`
-///       └─ AnswerText (TMP_Text)    -> wire to `answerText`
-///
-/// Body needs a LayoutElement (this script drives its Preferred Height).
-/// AnswerText's RectTransform needs a Content Size Fitter set to
-/// Vertical Fit = Preferred Size — that is what lets this script measure how
-/// tall the wrapped answer text actually needs to be before animating to it.
+/// Each field may hold EITHER a localization key from strings.csv (faq.q1,
+/// faq.a1 …) or the text itself. A value that matches a key in the sheet is
+/// translated; anything else is shown exactly as typed. That way the shipped
+/// questions follow the player's language, and anyone can still drop a one-off
+/// question straight into the Inspector without touching the sheet.
 /// </summary>
-public class FAQAccordionItem : MonoBehaviour
-{
-    [SerializeField] private Button header;
-    [SerializeField] private TMP_Text questionText;
-    [SerializeField] private TMP_Text answerText;
-    [SerializeField] private RectTransform body;
-    [SerializeField] private RectTransform arrow;
-
-    [Header("Animation")]
-    [SerializeField] private float animateSeconds = 0.25f;
-
-    public bool IsOpen { get; private set; }
-
-    /// <summary>
-    /// Fires just before this item opens. FAQAccordion uses this to close
-    /// whichever item was open before, so only one question is expanded at a
-    /// time — standard FAQ behaviour.
-    /// </summary>
-    public event Action<FAQAccordionItem> OnBeforeOpen;
-
-    private LayoutElement bodyLayout;
-    private float openHeight = -1f;   // measured lazily on first Open()
-    private Tween heightTween;
-
-    private void Awake()
-    {
-        if (body != null)
-        {
-            bodyLayout = body.GetComponent<LayoutElement>();
-            if (bodyLayout == null)
-                Debug.LogWarning($"[FAQAccordionItem] '{name}': Body has no LayoutElement — add one so its height can be animated.", this);
-        }
-
-        if (header != null) header.onClick.AddListener(Toggle);
-
-        SetHeightImmediate(0f);   // start collapsed
-        if (arrow != null) arrow.localRotation = Quaternion.identity;
-    }
-
-    /// <summary>Fill this row with one FAQ entry's text. Call before Awake runs its course, i.e. right after Instantiate.</summary>
-    public void SetContent(string question, string answer)
-    {
-        if (questionText != null) questionText.text = question;
-        if (answerText != null) answerText.text = answer;
-
-        // The wrapped height depends on this text, so any previous
-        // measurement is now stale.
-        openHeight = -1f;
-    }
-
-    public void Toggle()
-    {
-        if (IsOpen) Close();
-        else Open();
-    }
-
-    public void Open()
-    {
-        if (IsOpen) return;
-
-        OnBeforeOpen?.Invoke(this);
-        IsOpen = true;
-
-        if (openHeight < 0f) openHeight = MeasureAnswerHeight();
-
-        AnimateHeightTo(openHeight);
-        if (arrow != null) arrow.DOLocalRotate(new Vector3(0f, 0f, 180f), animateSeconds);
-    }
-
-    public void Close()
-    {
-        if (!IsOpen) return;
-
-        IsOpen = false;
-        AnimateHeightTo(0f);
-        if (arrow != null) arrow.DOLocalRotate(Vector3.zero, animateSeconds);
-    }
-
-    /// <summary>
-    /// Reads how tall the wrapped answer text actually needs — from
-    /// answerText's OWN rect (sized by its Content Size Fitter), never from
-    /// `body`'s rect, since body's height is the very thing this script
-    /// overrides; measuring from it would just read back our own last value.
-    /// </summary>
-    private float MeasureAnswerHeight()
-    {
-        if (answerText == null) return 0f;
-
-        RectTransform rt = answerText.rectTransform;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
-        return rt.rect.height;
-    }
-
-    private void AnimateHeightTo(float height)
-    {
-        if (bodyLayout == null) return;
-
-        heightTween?.Kill();
-        heightTween = DOTween.To(
-            () => bodyLayout.preferredHeight,
-            h => bodyLayout.preferredHeight = h,
-            height,
-            animateSeconds
-        ).SetEase(Ease.OutCubic);
-    }
-
-    private void SetHeightImmediate(float height)
-    {
-        if (bodyLayout != null) bodyLayout.preferredHeight = height;
-    }
-
-    private void OnDestroy() => heightTween?.Kill();
-}
-
 [Serializable]
 public struct FAQEntry
 {
@@ -170,7 +45,11 @@ public class FAQAccordion : MonoBehaviour
     private readonly List<FAQAccordionItem> items = new();
     private FAQAccordionItem currentlyOpen;
 
-    private void Start() => Build();
+    private void Start()
+    {
+        Build();
+        LocalizationManager.OnLanguageChanged += ApplyContent;
+    }
 
     private void Build()
     {
@@ -188,13 +67,42 @@ public class FAQAccordion : MonoBehaviour
         foreach (FAQEntry entry in entries)
         {
             FAQAccordionItem item = Instantiate(itemPrefab, contentParent);
-            item.SetContent(entry.question, entry.answer);
+            item.SetContent(Resolve(entry.question), Resolve(entry.answer));
 
             if (singleOpenAtATime)
                 item.OnBeforeOpen += HandleBeforeOpen;
 
             items.Add(item);
         }
+    }
+
+    /// <summary>
+    /// Re-reads every row in the new language. The rows themselves are kept
+    /// rather than rebuilt, so switching language while the FAQ is open does not
+    /// make the list jump or collapse under the player.
+    /// </summary>
+    private void ApplyContent()
+    {
+        int count = Mathf.Min(items.Count, entries.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (items[i] == null) continue;
+            items[i].SetContent(Resolve(entries[i].question), Resolve(entries[i].answer));
+        }
+    }
+
+    /// <summary>
+    /// A value that is a key in the sheet becomes the translation; anything else
+    /// is returned untouched. Checking HasKey first is what allows both - L.T on
+    /// its own would turn ordinary typed text into "[some typed text]".
+    /// </summary>
+    private static string Resolve(string value)
+    {
+        if (string.IsNullOrEmpty(value)) return value;
+
+        LocalizationManager manager = LocalizationManager.Ensure();
+        return manager != null && manager.HasKey(value) ? L.T(value) : value;
     }
 
     private void HandleBeforeOpen(FAQAccordionItem opening)
@@ -207,6 +115,8 @@ public class FAQAccordion : MonoBehaviour
 
     private void OnDestroy()
     {
+        LocalizationManager.OnLanguageChanged -= ApplyContent;
+
         foreach (FAQAccordionItem item in items)
             if (item != null) item.OnBeforeOpen -= HandleBeforeOpen;
     }

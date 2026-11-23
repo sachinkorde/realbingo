@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using DG.Tweening;
 
@@ -37,8 +38,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private bool soundEnabled = true;
     [SerializeField] private bool musicEnabled = true;
 
+    [Header("Background Music")]
+    [Tooltip("Scenes that own a looping BGM. Loading any scene outside this list " +
+             "silences the music, so the menu stays quiet on its own instead of " +
+             "relying on every exit path to remember.")]
+    [SerializeField] private string[] scenesWithMusic = { "GameScene" };
+
     private Dictionary<string, SoundClip> clipDict = new Dictionary<string, SoundClip>();
     private Dictionary<string, AudioSource> activeSources = new Dictionary<string, AudioSource>();
+    // Keys already complained about, so an unregistered clip is reported
+    // once instead of on every frame a loop or a tick asks for it.
+    private readonly HashSet<string> missingClipsReported = new HashSet<string>();
     private AudioSource timerTickSource;
     private float lastTimerTickTime = -999f;
     private int lastSecondsLeft = -1;
@@ -54,6 +64,8 @@ public class AudioManager : MonoBehaviour
     private const string SOUND_ENABLED_KEY = "SoundEnabled";
 private const string MUSIC_ENABLED_KEY = "MusicEnabled";
     private const string MASTER_VOLUME_KEY = "MasterVolume";
+    private const string MUSIC_VOLUME_KEY = "MusicVolume";
+    private const string SFX_VOLUME_KEY = "SfxVolume";
 
     private void Awake()
     {
@@ -76,6 +88,90 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
 
         // Load saved settings
         LoadSettings();
+
+        // A serialised component saved before this field existed deserialises it
+        // as empty, and the C# initialiser above does not apply to it — so fall
+        // back here rather than silently treating gameplay as a quiet scene.
+        if (scenesWithMusic == null || scenesWithMusic.Length == 0)
+        {
+            scenesWithMusic = new[] { "GameScene" };
+        }
+
+        // This object outlives every scene, so its music would too: the game
+        // BGM used to keep playing over the menu after logout.
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        bool sceneHasMusic = scenesWithMusic != null
+                             && System.Array.IndexOf(scenesWithMusic, scene.name) >= 0;
+
+        if (!sceneHasMusic) ResetPlayback();
+    }
+
+    /// <summary>
+    /// Silences everything that loops — music, the spin loop, the countdown tick
+    /// and ambience — and clears any ducking left mid-fade. One-shot sounds
+    /// (button clicks and the rest) are untouched, and no saved setting changes:
+    /// this resets playback, not the player's preferences.
+    /// </summary>
+    public void ResetPlayback()
+    {
+        musicDuckTween?.Kill();
+        musicDuckTween = null;
+        musicRestoreDelayTween?.Kill();
+        musicRestoreDelayTween = null;
+        musicDuckFactor = 1f;
+
+        if (musicSource != null)
+        {
+            musicSource.DOKill();          // drop any fade mid-flight
+            musicSource.Stop();
+            musicSource.clip = null;       // so EnsureLoopPlaying restarts cleanly
+        }
+
+        if (spinLoopSource != null)
+        {
+            spinLoopSource.DOKill();
+            spinLoopSource.Stop();
+        }
+
+        timerTickSource?.Stop();
+        ambientSource?.Stop();
+
+        lastSecondsLeft = -1;
+        lastTimerTickTime = -999f;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            // C#'s ?. operator bypasses Unity's == null override, so a static
+            // left pointing at a destroyed object gets called into.
+            Instance = null;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+    }
+
+    /// <summary>
+    /// Clip lookup for the play paths: a plain dictionary hit, except it says
+    /// something the first time a key is missing. A silent miss is how "Win",
+    /// "Lose" and "BetClosed" went unnoticed for so long — those call sites read
+    /// perfectly and simply never make a sound.
+    /// </summary>
+    private bool TryGetClip(string key, out SoundClip clip)
+    {
+        if (clipDict.TryGetValue(key, out clip)) return true;
+
+        if (!string.IsNullOrEmpty(key) && missingClipsReported.Add(key))
+        {
+            Debug.LogWarning($"[AudioManager] No clip registered for \"{key}\" — nothing will " +
+                             "play. Add it to the Clips list on the AudioManager object.");
+        }
+
+        return false;
     }
 
     #region Settings
@@ -85,6 +181,12 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
         soundEnabled = PlayerPrefs.GetInt(SOUND_ENABLED_KEY, 1) == 1;
         musicEnabled = PlayerPrefs.GetInt(MUSIC_ENABLED_KEY, 1) == 1;
         masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, 1f);
+
+        // Music and effects are separate sliders in Settings, so they persist
+        // separately too. The serialised values are the defaults for a device
+        // that has never saved one.
+        musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, musicVolume);
+        sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, sfxVolume);
         
         ApplySettings();
     }
@@ -94,6 +196,8 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
         PlayerPrefs.SetInt(SOUND_ENABLED_KEY, soundEnabled ? 1 : 0);
         PlayerPrefs.SetInt(MUSIC_ENABLED_KEY, musicEnabled ? 1 : 0);
         PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicVolume);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
         PlayerPrefs.Save();
     }
 
@@ -135,6 +239,31 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
         if (persist) SaveSettings();
     }
 
+    /// <summary>
+    /// Background music level on its own, for the Music slider. Pass
+    /// persist:false while a finger is dragging and call SaveSettings() once it
+    /// settles — the same rule as SetMasterVolume.
+    /// </summary>
+    public void SetMusicVolume(float volume, bool persist = true)
+    {
+        musicVolume = Mathf.Clamp01(volume);
+        ApplySettings();
+
+        if (persist) SaveSettings();
+    }
+
+    /// <summary>Effects and announcer level on its own, for the Sound Fx slider.</summary>
+    public void SetSfxVolume(float volume, bool persist = true)
+    {
+        sfxVolume = Mathf.Clamp01(volume);
+        ApplySettings();
+
+        if (persist) SaveSettings();
+    }
+
+    public float GetMusicVolume() => musicVolume;
+    public float GetSfxVolume() => sfxVolume;
+
     public void SetMusicEnabled(bool enabled)
     {
         musicEnabled = enabled;
@@ -172,7 +301,7 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
     /// </summary>
     public void Play(string key)
     {
-        if (!clipDict.TryGetValue(key, out SoundClip clip)) return;
+        if (!TryGetClip(key, out SoundClip clip)) return;
 
         AudioSource source = GetSourceForKey(key);
         if (source == null) return;
@@ -198,7 +327,7 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
     public void PlayOneShot(string key)
     {
         if (!soundEnabled) return;
-        if (!clipDict.TryGetValue(key, out SoundClip clip)) return;
+        if (!TryGetClip(key, out SoundClip clip)) return;
 
         AudioSource source = IsUIKey(key) ? uiSource : sfxSource;
         if (source != null && clip.clip != null)
@@ -215,7 +344,7 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
     public void PlayOneShotRandomPitch(string key, float pitchVariation = 0.1f)
     {
         if (!soundEnabled) return;
-        if (!clipDict.TryGetValue(key, out SoundClip clip)) return;
+        if (!TryGetClip(key, out SoundClip clip)) return;
 
         AudioSource source = IsUIKey(key) ? uiSource : sfxSource;
         if (source != null && clip.clip != null)
@@ -361,7 +490,7 @@ private const string MUSIC_ENABLED_KEY = "MusicEnabled";
     public void PlayCountdownTick(string key, int secondsLeft, int warningStartSeconds)
     {
         if (!soundEnabled) return;
-        if (!clipDict.TryGetValue(key, out SoundClip clip) || clip.clip == null) return;
+        if (!TryGetClip(key, out SoundClip clip) || clip.clip == null) return;
 
         if (secondsLeft == lastSecondsLeft) return;
         lastSecondsLeft = secondsLeft;
@@ -405,7 +534,7 @@ if (Time.unscaledTime - lastTimerTickTime < minInterval) return;
     public void FadeInMusic(string key, float duration = 1f)
     {
         if (!musicEnabled) return;
-        if (!clipDict.TryGetValue(key, out SoundClip clip)) return;
+        if (!TryGetClip(key, out SoundClip clip)) return;
 
         if (musicSource != null)
         {
@@ -433,7 +562,7 @@ if (Time.unscaledTime - lastTimerTickTime < minInterval) return;
 
     public void EnsureLoopPlaying(string key)
     {
-        if (!clipDict.TryGetValue(key, out SoundClip clip) || clip.clip == null) return;
+        if (!TryGetClip(key, out SoundClip clip) || clip.clip == null) return;
 
         AudioSource source = GetSourceForKey(key);
         if (source == null) return;

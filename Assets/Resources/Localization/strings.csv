@@ -104,6 +104,9 @@ game.waiting_result,Waiting for the result… check your connection.,नती�
 game.history_failed,Could not load recent results.,हाल के नतीजे लोड नहीं हो सके।,अलीकडील निकाल लोड होऊ शकले नाहीत.
 game.offline,No internet connection.,इंटरनेट कनेक्शन नहीं है।,इंटरनेट कनेक्शन नाही.
 game.winning_number,Winning Number: {0},जीतने वाला नंबर: {0},जिंकणारा क्रमांक: {0}
+game.wallet,Wallet,वॉलेट,वॉलेट,Wallet
+game.winning,Winning,जीत,जिंकलेले,Winning
+game.total_bet,Total Bet,कुल दांव,एकूण पैज,Total Bet
 # ── Wallet ───────────────────────────────────────────────────────────────────
 wallet.insufficient,Insufficient wallet balance.,वॉलेट में पर्याप्त बैलेंस नहीं है।,वॉलेटमध्ये पुरेशी शिल्लक नाही.
 wallet.balance,Balance:,बैलेंस:,शिल्लक:
@@ -175,6 +178,7 @@ referral.not_loaded,Your referral code isn't loaded yet.,आपका रेफ�
 referral.share_failed,Could not open the share menu.,शेयर मेन्यू नहीं खुल सका।,शेअर मेनू उघडू शकला नाही.
 # ── Settings ─────────────────────────────────────────────────────────────────
 settings.title,Settings,सेटिंग्स,सेटिंग्ज
+settings.notification,Notification,सूचना,सूचना
 settings.music,Music,संगीत,संगीत
 settings.sound,Sound,आवाज़,आवाज
 settings.vibration,Vibration,कंपन,कंपन
@@ -338,3 +342,104 @@ ui.vibration,Vibration,कंपन,कंपन
 ui.volume,Volume,आवाज़ का स्तर,आवाजेची पातळी
 ui.help,Help,मदद,मदत
 ui.faq,FAQ,सामान्य सवाल,सामान्य प्रश्न,F&Q
+# --- Help, How to Play and FAQ content (added for the help screens) ---
+help.title,Help & Support,मदद और सहायता,मदत आणि सहाय्य
+help.intro,Stuck on something? Get in touch and we will help.,"कहीं अटक गए हैं? हमसे संपर्क करें, हम मदद करेंगे।","कुठे अडकला आहात? आमच्याशी संपर्क साधा, आम्ही मदत करू."
+help.note,Support hours and languages go here.,सहायता का समय और भाषाएं यहां लिखें।,सहाय्याच्या वेळा आणि भाषा इथे लिहा.
+help.call_us,Call us,हमें कॉल करें,आम्हाला कॉल करा
+help.whatsapp,Chat on WhatsApp,व्हाट्सएप पर चैट करें,व्हॉट्सॲपवर चॅट करा
+help.email_us,Email us,हमें ईमेल करें,आम्हाला ईमेल करा
+referral.copy_code,Copy Code,कोड कॉपी करें,कोड कॉपी करा
+referral.share,Share,शेयर करें,शेअर करा
+common.enter_text,Enter text…,यहां लिखें…,इथे लिहा…
+faq.q1,How do I place a bet?,मैं दांव कैसे लगाऊं?,मी पैज कशी लावू?
+faq.a1,"Pick a chip at the bottom of the screen, then tap a number from 0 to 9, or the J slot. That amount leaves your wallet and appears on the slot. Tap the same slot again to add more, and spread chips across as many numbers as you like in one round.","स्क्रीन के नीचे से एक चिप चुनें, फिर 0 से 9 तक कोई नंबर या J स्लॉट दबाएं। वह रकम आपके वॉलेट से कटकर उस स्लॉट पर दिखती है। और जोड़ने के लिए उसी स्लॉट को दोबारा दबाएं, और एक ही राउंड में जितने चाहें उतने नंबरों पर चिप लगाएं।","स्क्रीनच्या खाली असलेली एक चिप निवडा, नंतर 0 ते 9 मधील कोणताही क्रमांक किंवा J स्लॉट दाबा. ती रक्कम तुमच्या वॉलेटमधून जाते आणि त्या स्लॉटवर दिसते. आणखी जोडण्यासाठी तोच स्लॉट पुन्हा दाबा, आणि एकाच फेरीत हव्या तितक्या क्रमांकांवर चिप लावा."
+faq.q2,What is J?,J क्या है?,J म्हणजे काय?
+faq.a2,"J is the Joker - an eleventh target alongside the numbers 0 to 9. It pays more than a number does, and you can stake any chip on it, exactly like the rest.","J यानी जोकर - 0 से 9 नंबरों के साथ ग्यारहवां लक्ष्य। यह किसी नंबर से ज्यादा भुगतान करता है, और आप इस पर बाकी की तरह कोई भी चिप लगा सकते हैं।","J म्हणजे जोकर - 0 ते 9 क्रमांकांसोबतचे अकरावे लक्ष्य. तो क्रमांकापेक्षा जास्त पैसे देतो, आणि तुम्ही त्यावर इतरांप्रमाणेच कोणतीही चिप लावू शकता."
+faq.q3,How much do I win?,मुझे कितना मिलेगा?,मला किती मिळेल?
+faq.a3,"A winning number pays 9 times your stake on it, and J pays 20 times. The game reads these rates from the server at the start of a round, so always go by what the game shows you.","जीतने वाला नंबर उस पर लगी रकम का 9 गुना देता है, और J 20 गुना। खेल हर राउंड की शुरुआत में ये दरें सर्वर से लेता है, इसलिए हमेशा वही मानें जो खेल में दिख रहा हो।","जिंकणारा क्रमांक त्यावर लावलेल्या रकमेच्या 9 पट देतो, आणि J 20 पट. खेळ प्रत्येक फेरीच्या सुरुवातीला हे दर सर्व्हरकडून घेतो, त्यामुळे खेळात जे दिसते तेच ग्राह्य धरा."
+faq.q4,How long does a round last?,एक राउंड कितनी देर चलता है?,एक फेरी किती वेळ चालते?
+faq.a4,"About 60 seconds. The timer shows how long you have left, and betting closes a moment before the wheel starts to spin. Bets already placed stay on the table.","करीब 60 सेकंड। टाइमर दिखाता है कि कितना समय बचा है, और पहिया घूमने से ठीक पहले दांव लगाना बंद हो जाता है। पहले लगाए गए दांव टेबल पर बने रहते हैं।","सुमारे 60 सेकंद. टाइमर किती वेळ शिल्लक आहे ते दाखवतो, आणि चाक फिरण्याच्या थोडे आधी पैज लावणे बंद होते. आधी लावलेल्या पैजा टेबलवर तशाच राहतात."
+faq.q5,Can I take a bet back?,क्या मैं दांव वापस ले सकता हूं?,मी पैज परत घेऊ शकतो का?
+faq.a5,"Undo removes the last chip you placed and returns it to your wallet, and you can keep tapping it to walk back further. Both only work while betting is still open.","Undo आपकी आखिरी लगाई चिप हटाकर वॉलेट में वापस कर देता है, और पीछे जाने के लिए आप इसे बार-बार दबा सकते हैं। ये तभी काम करते हैं जब दांव लगाना खुला हो।","Undo तुम्ही शेवटी लावलेली चिप काढून वॉलेटमध्ये परत करते, आणि अजून मागे जाण्यासाठी तुम्ही ते पुन्हा पुन्हा दाबू शकता. पैज लावणे चालू असतानाच हे काम करते."
+faq.q6,What does Repeat do?,Repeat क्या करता है?,Repeat काय करते?
+faq.a6,"It places the same bets you made in the previous round, in one tap. If your wallet cannot cover all of them, whatever it can cover is placed.","यह एक ही टैप में पिछले राउंड वाले दांव दोबारा लगा देता है। अगर वॉलेट में सबके लिए पैसे न हों, तो जितने लग सकते हैं उतने लगते हैं।","हे एकाच टॅपमध्ये मागील फेरीतल्याच पैजा पुन्हा लावते. वॉलेटमध्ये सगळ्यांसाठी पैसे नसतील, तर जितक्या लागू शकतात तितक्या लागतात."
+faq.q7,What are the Last 10 Results?,Last 10 Results क्या हैं?,Last 10 Results म्हणजे काय?
+faq.a7,"The row of numbers near the top left is the last ten winning numbers, most recent first. It is there to look back at - it does not predict anything, and every spin is independent.","ऊपर बाईं ओर दिखने वाली नंबरों की कतार पिछले दस जीतने वाले नंबर हैं, सबसे नया पहले। यह सिर्फ पीछे देखने के लिए है - यह कुछ भी नहीं बताता कि आगे क्या आएगा, और हर स्पिन अलग होती है।","वर डावीकडे दिसणारी क्रमांकांची रांग म्हणजे शेवटचे दहा जिंकणारे क्रमांक, सर्वात नवीन आधी. हे फक्त मागे पाहण्यासाठी आहे - पुढे काय येईल ते सांगत नाही, आणि प्रत्येक फेरी स्वतंत्र असते."
+faq.q8,How does Refer and Earn work?,Refer and Earn कैसे काम करता है?,Refer and Earn कसे काम करते?
+faq.a8,"Refer and Earn shows your own referral code and a Share button. When somebody signs up using your code you earn a bonus, and that screen also shows how many people have joined through you and how much you have earned in total.","Refer and Earn में आपका अपना रेफरल कोड और एक Share बटन दिखता है। जब कोई आपके कोड से साइन अप करता है, आपको बोनस मिलता है। उसी स्क्रीन पर यह भी दिखता है कि आपके जरिए कितने लोग जुड़े और आपने कुल कितना कमाया।",Refer and Earn मध्ये तुमचा स्वतःचा रेफरल कोड आणि एक Share बटण दिसते. कोणी तुमच्या कोडने साइन अप केल्यावर तुम्हाला बोनस मिळतो. त्याच स्क्रीनवर तुमच्यामार्फत किती लोक जोडले गेले आणि तुम्ही एकूण किती कमावले तेही दिसते.
+faq.q9,How do I add money or cash out?,पैसे कैसे जोड़ूं या निकालूं?,पैसे कसे जोडू किंवा काढू?
+faq.a9,"Add Cash tops up your wallet. To cash out, open your profile and use the withdraw option. You may be asked to complete your profile and bank details first.",Add Cash से वॉलेट में पैसे जुड़ते हैं। निकालने के लिए अपनी प्रोफाइल खोलें और withdraw वाला विकल्प चुनें। पहले आपसे प्रोफाइल और बैंक जानकारी पूरी करने को कहा जा सकता है।,Add Cash ने वॉलेटमध्ये पैसे जोडले जातात. काढण्यासाठी तुमची प्रोफाइल उघडा आणि withdraw पर्याय वापरा. आधी प्रोफाइल आणि बँक तपशील पूर्ण करण्यास सांगितले जाऊ शकते.
+faq.q10,Can I play in Hindi or Marathi?,क्या मैं हिंदी या मराठी में खेल सकता हूं?,मी हिंदी किंवा मराठीत खेळू शकतो का?
+faq.a10,"Yes. Settings has English, Hindi and Marathi, and the whole game changes language straight away - you do not need to restart it.","हां। Settings में अंग्रेजी, हिंदी और मराठी हैं, और पूरा खेल तुरंत उस भाषा में बदल जाता है - दोबारा शुरू करने की जरूरत नहीं।","होय. Settings मध्ये इंग्रजी, हिंदी आणि मराठी आहेत, आणि पूर्ण खेळ लगेच त्या भाषेत बदलतो - पुन्हा सुरू करण्याची गरज नाही."
+faq.q11,How do I turn the sound or notifications off?,आवाज या नोटिफिकेशन कैसे बंद करूं?,आवाज किंवा सूचना कशा बंद करू?
+faq.a11,"Settings has separate switches for notifications, vibration, button sounds and background music, plus a slider for music volume. They are remembered between sessions.","Settings में नोटिफिकेशन, कंपन, बटन की आवाज और बैकग्राउंड म्यूजिक के अलग-अलग स्विच हैं, और म्यूजिक की आवाज के लिए एक स्लाइडर। ये सेटिंग्स अगली बार भी याद रहती हैं।","Settings मध्ये सूचना, कंपन, बटणाचा आवाज आणि पार्श्वसंगीत यांसाठी वेगवेगळी बटणे आहेत, आणि संगीताच्या आवाजासाठी एक स्लायडर. या सेटिंग्ज पुढच्या वेळीही लक्षात ठेवल्या जातात."
+faq.q12,Something looks wrong with my wallet.,मेरे वॉलेट में कुछ गड़बड़ लग रही है।,माझ्या वॉलेटमध्ये काहीतरी चुकीचे वाटते.
+faq.a12,"Winnings are added to your wallet as soon as the round finishes, and the amount is shown on screen. If a balance still looks wrong, get in touch from the Help screen with the time of the round and what you expected.",राउंड खत्म होते ही जीती हुई रकम आपके वॉलेट में जुड़ जाती है और स्क्रीन पर दिखती है। फिर भी बैलेंस गलत लगे तो Help स्क्रीन से संपर्क करें और बताएं कि राउंड किस समय का था और आपको क्या उम्मीद थी।,फेरी संपताच जिंकलेली रक्कम तुमच्या वॉलेटमध्ये जमा होते आणि स्क्रीनवर दिसते. तरीही शिल्लक चुकीची वाटल्यास Help स्क्रीनवरून संपर्क साधा आणि फेरी कोणत्या वेळची होती व तुम्हाला काय अपेक्षित होते ते सांगा.
+howtoplay.body,"<b>The idea</b>
+Each round the wheel stops on one of eleven targets: the numbers 0 to 9, or J, the Joker. You win if you have a chip on whatever it stops on.
+
+<b>1. Pick a chip</b>
+The chips run along the bottom of the screen. Tap one to select it - that is how much goes down each time you tap a slot. Any chip can go on any target, J included.
+
+<b>2. Place your bets</b>
+Tap a number from 0 to 9, or J. The stake leaves your wallet and shows on that slot. Tap the same slot again to raise it, or back as many numbers as you like in the same round.
+
+<b>3. Watch the timer</b>
+A round runs for about 60 seconds. Betting closes a moment before the wheel starts to turn, so get your chips down before the timer runs out.
+
+<b>4. The spin</b>
+The wheel spins and settles on the winning target. It is then added to Last 10 Results.
+
+<b>5. Getting paid</b>
+A winning number pays <b>9x</b> your stake on it. J pays <b>20x</b>. Winnings go straight into your wallet and the amount is shown on screen. Stakes on every other target are lost.
+
+<b>Repeat, Undo and the result strip</b>
+Repeat puts down the same bets as last round in one tap. Undo takes back the chip you placed last and returns it to your wallet. Last 10 Results is a record of recent winning numbers - every spin is independent of the ones before it.
+
+<b>Play sensibly</b>
+Only stake money you can afford to lose, and take a break when you need one.","<b>खेल क्या है</b>
+हर राउंड में पहिया ग्यारह लक्ष्यों में से एक पर रुकता है: 0 से 9 तक के नंबर, या J यानी जोकर। जिस पर पहिया रुके, उस पर आपकी चिप लगी हो तो आप जीतते हैं।
+
+<b>1. चिप चुनें</b>
+चिप स्क्रीन के नीचे कतार में हैं। किसी एक को दबाकर चुनें - हर बार स्लॉट दबाने पर उतनी ही रकम लगेगी। कोई भी चिप किसी भी लक्ष्य पर लग सकती है, J पर भी।
+
+<b>2. दांव लगाएं</b>
+0 से 9 तक कोई नंबर या J दबाएं। रकम आपके वॉलेट से कटकर उस स्लॉट पर दिखती है। रकम बढ़ाने के लिए वही स्लॉट दोबारा दबाएं, या उसी राउंड में जितने चाहें उतने नंबरों पर लगाएं।
+
+<b>3. टाइमर पर नजर रखें</b>
+एक राउंड करीब 60 सेकंड का होता है। पहिया घूमने से ठीक पहले दांव लगाना बंद हो जाता है, इसलिए समय खत्म होने से पहले चिप लगा दें।
+
+<b>4. स्पिन</b>
+पहिया घूमता है और जीतने वाले लक्ष्य पर रुकता है। फिर वह Last 10 Results में जुड़ जाता है।
+
+<b>5. भुगतान</b>
+जीतने वाला नंबर उस पर लगी रकम का <b>9 गुना</b> देता है। J <b>20 गुना</b> देता है। जीती हुई रकम सीधे आपके वॉलेट में जाती है और स्क्रीन पर दिखती है। बाकी सभी लक्ष्यों पर लगी रकम चली जाती है।
+
+<b>Repeat, Undo और रिजल्ट की कतार</b>
+Repeat एक ही टैप में पिछले राउंड वाले दांव दोबारा लगा देता है। Undo आपकी आखिरी लगाई चिप वापस वॉलेट में कर देता है। Last 10 Results पिछले जीते नंबरों का रिकॉर्ड है - हर स्पिन पिछली स्पिन से अलग और स्वतंत्र होती है।
+
+<b>समझदारी से खेलें</b>
+उतना ही पैसा लगाएं जितना आप खो सकते हैं, और जरूरत लगे तो ब्रेक लें।","<b>खेळ काय आहे</b>
+प्रत्येक फेरीत चाक अकरा लक्ष्यांपैकी एकावर थांबते: 0 ते 9 हे क्रमांक, किंवा J म्हणजे जोकर. ज्यावर चाक थांबेल त्यावर तुमची चिप असेल तर तुम्ही जिंकता.
+
+<b>1. चिप निवडा</b>
+चिप स्क्रीनच्या खाली रांगेत आहेत. एक दाबून निवडा - प्रत्येक वेळी स्लॉट दाबल्यावर तितकीच रक्कम लागेल. कोणतीही चिप कोणत्याही लक्ष्यावर लावता येते, J वरही.
+
+<b>2. पैज लावा</b>
+0 ते 9 मधील क्रमांक किंवा J दाबा. रक्कम तुमच्या वॉलेटमधून जाऊन त्या स्लॉटवर दिसते. रक्कम वाढवण्यासाठी तोच स्लॉट पुन्हा दाबा, किंवा त्याच फेरीत हव्या तितक्या क्रमांकांवर लावा.
+
+<b>3. टाइमरकडे लक्ष ठेवा</b>
+एक फेरी सुमारे 60 सेकंदांची असते. चाक फिरण्याच्या थोडे आधी पैज लावणे बंद होते, त्यामुळे वेळ संपण्यापूर्वी चिप लावा.
+
+<b>4. फेरी</b>
+चाक फिरते आणि जिंकणाऱ्या लक्ष्यावर थांबते. नंतर ते Last 10 Results मध्ये जोडले जाते.
+
+<b>5. पैसे मिळणे</b>
+जिंकणारा क्रमांक त्यावर लावलेल्या रकमेच्या <b>9 पट</b> देतो. J <b>20 पट</b> देतो. जिंकलेली रक्कम थेट तुमच्या वॉलेटमध्ये जाते आणि स्क्रीनवर दिसते. इतर सर्व लक्ष्यांवर लावलेली रक्कम जाते.
+
+<b>Repeat, Undo आणि निकालाची रांग</b>
+Repeat एकाच टॅपमध्ये मागील फेरीतल्याच पैजा पुन्हा लावते. Undo तुम्ही शेवटी लावलेली चिप वॉलेटमध्ये परत करते. Last 10 Results हा अलीकडच्या जिंकणाऱ्या क्रमांकांचा रेकॉर्ड आहे - प्रत्येक फेरी आधीच्या फेरीपासून स्वतंत्र असते.
+
+<b>समजून खेळा</b>
+परवडेल तेवढेच पैसे लावा, आणि गरज वाटल्यास थोडा ब्रेक घ्या."

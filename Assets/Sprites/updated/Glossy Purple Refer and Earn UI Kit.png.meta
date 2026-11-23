@@ -1,0 +1,1116 @@
+fileFormatVersion: 2
+guid: 739df8a3ab1ac6747a0251a815060ad9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_0
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 479
+        width: 779
+        height: 516
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 737, y: 17}
+        - {x: 735, y: 18}
+        - {x: 736, y: 18}
+        - {x: 749, y: 39}
+        - {x: 753, y: 55}
+        - {x: 753, y: 509}
+        - {x: 448, y: 512}
+        - {x: -122, y: 512}
+        - {x: -139, y: 497}
+        - {x: -137, y: 490}
+        - {x: -135, y: 488}
+        - {x: -139, y: 490}
+        - {x: -139, y: 496}
+        - {x: -151, y: 512}
+        - {x: -652, y: 512}
+        - {x: -603, y: 469}
+        - {x: -597, y: 470}
+        - {x: -590, y: 469}
+        - {x: -598, y: 469}
+        - {x: -604, y: 463}
+        - {x: -665, y: 468}
+        - {x: -750, y: 449}
+        - {x: -753, y: 417}
+        - {x: -753, y: -13}
+        - {x: -707, y: -68}
+        - {x: -707.9, y: -74.3}
+        - {x: -710, y: -75}
+        - {x: -724, y: -69}
+        - {x: -750, y: -135}
+        - {x: -699, y: -185}
+        - {x: -626, y: -205}
+        - {x: -524.93286, y: -79.06714}
+        - {x: -524, y: -80}
+        - {x: -521, y: -79}
+        - {x: -519, y: -74}
+        - {x: -520.03534, y: -72.96466}
+        - {x: -500, y: -48}
+        - {x: -452, y: -48}
+        - {x: -422, y: -64}
+        - {x: -414, y: -65}
+        - {x: -404, y: -65}
+        - {x: -403, y: -62}
+        - {x: -403, y: -66}
+        - {x: -407, y: -91}
+        - {x: -455, y: -51}
+        - {x: -505, y: -56}
+        - {x: -517, y: -86}
+        - {x: -619, y: -210}
+        - {x: -556, y: -308}
+        - {x: -508, y: -317}
+        - {x: -501, y: -316}
+        - {x: -499, y: -314}
+        - {x: -491, y: -318}
+        - {x: -502, y: -317}
+        - {x: -520, y: -323}
+        - {x: -753, y: -263}
+        - {x: -753, y: -490}
+        - {x: -647, y: -490}
+        - {x: -592, y: -474}
+        - {x: -595, y: -464}
+        - {x: -595, y: -461}
+        - {x: -592, y: -467}
+        - {x: -542, y: -490}
+        - {x: -455, y: -490}
+        - {x: -455, y: -494}
+        - {x: -454, y: -496}
+        - {x: -440, y: -496}
+        - {x: -434.75, y: -490}
+        - {x: -422, y: -490}
+        - {x: -335, y: -451}
+        - {x: -336, y: -433}
+        - {x: -341, y: -416}
+        - {x: -361, y: -410}
+        - {x: -366, y: -415}
+        - {x: -416, y: -412}
+        - {x: -449, y: -391}
+        - {x: -420, y: -404}
+        - {x: -372, y: -412}
+        - {x: -343, y: -402}
+        - {x: -278, y: -402}
+        - {x: -220.46153, y: -399.3846}
+        - {x: -322, y: -418}
+        - {x: -323, y: -419}
+        - {x: -323, y: -439}
+        - {x: -307, y: -458}
+        - {x: -286, y: -464}
+        - {x: -241.94972, y: -470.49164}
+        - {x: -245, y: -471}
+        - {x: -245, y: -483}
+        - {x: -240, y: -487}
+        - {x: -226, y: -487}
+        - {x: -223, y: -485}
+        - {x: -223, y: -473.2842}
+        - {x: -191, y: -478}
+        - {x: -19, y: -478}
+        - {x: 53, y: -455}
+        - {x: 59, y: -444}
+        - {x: 59, y: -426}
+        - {x: 17, y: -411}
+        - {x: -107, y: -396}
+        - {x: -129, y: -396}
+        - {x: -131.42857, y: -393.5714}
+        - {x: 28, y: -367}
+        - {x: 36, y: -341}
+        - {x: -4, y: -320}
+        - {x: -89, y: -311}
+        - {x: -166, y: -318}
+        - {x: -155, y: -316}
+        - {x: -148, y: -304}
+        - {x: -165, y: -300}
+        - {x: -220, y: -283}
+        - {x: -377, y: -263}
+        - {x: -447, y: -285}
+        - {x: -475, y: -274.6842}
+        - {x: -475, y: -272}
+        - {x: -476.2281, y: -270.7719}
+        - {x: -435, y: -262}
+        - {x: -398, y: -226}
+        - {x: -337, y: -252}
+        - {x: -269, y: -259}
+        - {x: -175, y: -266}
+        - {x: -114, y: -194}
+        - {x: -140, y: -90}
+        - {x: -174, y: -72}
+        - {x: -152, y: -80}
+        - {x: -70, y: -91}
+        - {x: -59, y: -90.4624}
+        - {x: -59, y: -169}
+        - {x: -40, y: -244}
+        - {x: 192, y: -244}
+        - {x: 209, y: -235}
+        - {x: 209, y: -70}
+        - {x: 204.15413, y: -69.40904}
+        - {x: 252, y: -19}
+        - {x: 248, y: 18}
+        - {x: 229, y: 56}
+        - {x: 248, y: 28}
+        - {x: 257, y: -67}
+        - {x: 325.3333, y: -72}
+        - {x: 253, y: -72}
+        - {x: 253, y: -231}
+        - {x: 275, y: -244}
+        - {x: 481, y: -244}
+        - {x: 501, y: -237}
+        - {x: 503, y: -210}
+        - {x: 503, y: -193.76271}
+        - {x: 517, y: -188.4}
+        - {x: 517, y: -214}
+        - {x: 604, y: -262}
+        - {x: 645, y: -262}
+        - {x: 648, y: -257}
+        - {x: 647, y: -254}
+        - {x: 645, y: -252}
+        - {x: 657, y: -256}
+        - {x: 676, y: -257}
+        - {x: 753, y: -219}
+        - {x: 753, y: 3}
+      - - {x: -199, y: 483}
+        - {x: -198, y: 484}
+        - {x: -198, y: 487}
+        - {x: -195, y: 487}
+        - {x: -194, y: 488}
+        - {x: -193, y: 487}
+        - {x: -192, y: 487}
+        - {x: -192, y: 484}
+        - {x: -191, y: 483}
+      - - {x: 78, y: 391}
+        - {x: 76, y: 390}
+        - {x: 75, y: 391}
+        - {x: 76, y: 392}
+        - {x: 77, y: 391}
+        - {x: 79, y: 391}
+        - {x: 80, y: 390}
+      - - {x: 733, y: 385}
+        - {x: 732, y: 385}
+        - {x: 732, y: 386}
+        - {x: 733, y: 387}
+        - {x: 735, y: 385}
+        - {x: 734, y: 384}
+      - - {x: 72, y: 355}
+        - {x: 72, y: 366}
+        - {x: 71, y: 367}
+        - {x: 71, y: 369}
+        - {x: 72, y: 370}
+        - {x: 72, y: 379}
+        - {x: 87, y: 379}
+        - {x: 88, y: 380}
+        - {x: 89, y: 379}
+        - {x: 96, y: 379}
+        - {x: 96, y: 378}
+        - {x: 95, y: 378}
+        - {x: 88, y: 372}
+        - {x: 87, y: 373}
+        - {x: 81, y: 373}
+        - {x: 78, y: 370}
+        - {x: 78, y: 361}
+        - {x: 77, y: 361}
+        - {x: 74, y: 358}
+        - {x: 73, y: 355}
+      - - {x: -741, y: 205}
+        - {x: -738, y: 208}
+        - {x: -738, y: 211}
+        - {x: -735, y: 211}
+        - {x: -738, y: 208}
+        - {x: -738, y: 205}
+      - - {x: 130, y: 197}
+        - {x: 131, y: 198}
+        - {x: 140, y: 198}
+        - {x: 139, y: 197}
+      - - {x: 311, y: 198}
+        - {x: 315, y: 198}
+        - {x: 317, y: 196}
+        - {x: 310, y: 196}
+      - - {x: 702, y: 196}
+        - {x: 701, y: 197}
+        - {x: 703, y: 196}
+      - - {x: 684, y: 196}
+        - {x: 683, y: 197}
+        - {x: 685, y: 196}
+      - - {x: 666, y: 196}
+        - {x: 665, y: 197}
+        - {x: 667, y: 196}
+      - - {x: 75, y: 157}
+        - {x: 76, y: 157}
+        - {x: 76.16667, y: 155.83333}
+      - - {x: 72, y: 124}
+        - {x: 72, y: 126}
+        - {x: 70, y: 128}
+        - {x: 72, y: 130}
+        - {x: 72, y: 132}
+        - {x: 71, y: 133}
+        - {x: 75, y: 133}
+        - {x: 77, y: 135}
+        - {x: 76, y: 130}
+        - {x: 77, y: 127}
+        - {x: 75, y: 127}
+        - {x: 72, y: 124}
+        - {x: 72, y: 118}
+        - {x: 69, y: 121}
+      - - {x: 380.97638, y: -72}
+        - {x: 411, y: 51}
+        - {x: 375, y: 89}
+        - {x: 369, y: 84}
+        - {x: 352, y: 84}
+        - {x: 354, y: 91}
+        - {x: 457, y: 92}
+        - {x: 414, y: 67}
+        - {x: 413, y: -36}
+        - {x: 422.25714, y: -72}
+      - - {x: 552, y: 82}
+        - {x: 552, y: 84}
+        - {x: 550, y: 86}
+        - {x: 551, y: 87}
+        - {x: 553, y: 86}
+        - {x: 555, y: 86}
+        - {x: 558, y: 88}
+        - {x: 558, y: 85}
+        - {x: 560.5, y: 82.5}
+        - {x: 560, y: 82}
+        - {x: 555, y: 82}
+        - {x: 554, y: 81}
+      - - {x: 324, y: 87}
+        - {x: 326.1667, y: 87.16667}
+        - {x: 324, y: 85}
+      - - {x: 678, y: 69}
+        - {x: 678, y: 70}
+        - {x: 681, y: 67}
+        - {x: 680, y: 67}
+      - - {x: 138, y: 74}
+        - {x: 138, y: 80}
+        - {x: 137, y: 81}
+        - {x: 138, y: 81}
+        - {x: 138.5, y: 81.5}
+        - {x: 141, y: 79}
+        - {x: 144, y: 79}
+        - {x: 147, y: 76}
+        - {x: 144, y: 73}
+        - {x: 136.22223, y: 72.22223}
+      - - {x: 647, y: 70}
+        - {x: 648, y: 70}
+        - {x: 647.5, y: 69.5}
+      - - {x: 617, y: 67}
+        - {x: 618, y: 67}
+        - {x: 616.6667, y: 66.66667}
+      - - {x: 275, y: 50}
+        - {x: 277, y: 50}
+        - {x: 276, y: 49}
+      - - {x: -522, y: -35}
+        - {x: -519, y: -35}
+        - {x: -522, y: -38}
+      - - {x: -312, y: -65}
+        - {x: -312, y: -62}
+        - {x: -309, y: -65}
+        - {x: -306, y: -65}
+        - {x: -306, y: -68}
+        - {x: -309, y: -65}
+      - - {x: 231, y: -60}
+        - {x: 227, y: -60}
+        - {x: 225, y: -64}
+        - {x: 225, y: -68}
+        - {x: 227, y: -70}
+        - {x: 232, y: -70}
+        - {x: 234, y: -68}
+        - {x: 236, y: -70}
+        - {x: 239, y: -69}
+        - {x: 239, y: -66}
+        - {x: 237, y: -64}
+        - {x: 234, y: -65}
+        - {x: 234, y: -61}
+      - - {x: -330, y: -83}
+        - {x: -330, y: -80}
+        - {x: -333, y: -77}
+        - {x: -336, y: -77}
+        - {x: -336, y: -74}
+        - {x: -333, y: -77}
+        - {x: -327, y: -77}
+        - {x: -324, y: -74}
+        - {x: -324, y: -68}
+        - {x: -327, y: -65}
+        - {x: -324, y: -65}
+        - {x: -324, y: -68}
+        - {x: -321, y: -71}
+        - {x: -318, y: -71}
+        - {x: -318, y: -74}
+        - {x: -315, y: -77}
+        - {x: -309, y: -77}
+        - {x: -312, y: -80}
+        - {x: -312, y: -83}
+      - - {x: -369, y: -71}
+        - {x: -363, y: -71}
+        - {x: -366, y: -74}
+      - - {x: -474, y: -78}
+        - {x: -474, y: -77}
+        - {x: -471, y: -77}
+        - {x: -468, y: -74}
+        - {x: -465, y: -77}
+        - {x: -471, y: -77}
+        - {x: -473, y: -79}
+      - - {x: 238, y: -113}
+        - {x: 239, y: -111}
+        - {x: 239, y: -99}
+        - {x: 235, y: -96}
+        - {x: 220, y: -96}
+        - {x: 217, y: -103}
+        - {x: 217, y: -115}
+        - {x: 229, y: -115}
+      - - {x: -366, y: -101}
+        - {x: -366, y: -98}
+        - {x: -363, y: -101}
+      - - {x: -73, y: -117}
+        - {x: -76, y: -114}
+        - {x: -87, y: -108}
+        - {x: -106, y: -108}
+        - {x: -107, y: -110}
+        - {x: -107, y: -218}
+        - {x: -101, y: -230}
+        - {x: -73, y: -230}
+      - - {x: -384, y: -125}
+        - {x: -384, y: -123}
+        - {x: -387, y: -120}
+        - {x: -388, y: -120}
+        - {x: -390, y: -122}
+        - {x: -393, y: -119}
+        - {x: -391, y: -118}
+        - {x: -390, y: -119}
+        - {x: -384, y: -118}
+        - {x: -378, y: -112}
+        - {x: -378, y: -116}
+        - {x: -379, y: -116}
+        - {x: -384, y: -121}
+        - {x: -384, y: -122}
+        - {x: -381.5, y: -124.5}
+        - {x: -382, y: -125}
+      - - {x: -492, y: -122}
+        - {x: -492, y: -113}
+        - {x: -491, y: -115}
+        - {x: -487, y: -119}
+        - {x: -485, y: -122}
+        - {x: -484.3, y: -122.7}
+      - - {x: -115, y: -124}
+        - {x: -115, y: -121}
+        - {x: -118, y: -120}
+        - {x: -120, y: -122}
+        - {x: -118, y: -125}
+      - - {x: -397, y: -136}
+        - {x: -393, y: -137}
+        - {x: -390, y: -134}
+        - {x: -390, y: -137}
+        - {x: -393, y: -137}
+        - {x: -394.5, y: -138.5}
+      - - {x: -381, y: -143}
+        - {x: -378, y: -140}
+        - {x: -378, y: -137}
+        - {x: -375, y: -140}
+        - {x: -372, y: -140}
+        - {x: -372, y: -143}
+      - - {x: -435, y: -149}
+        - {x: -438, y: -149}
+        - {x: -432, y: -148}
+        - {x: -434, y: -150}
+      - - {x: -485, y: -271}
+        - {x: -492, y: -269}
+        - {x: -493, y: -250}
+        - {x: -488, y: -251}
+        - {x: -491, y: -254}
+        - {x: -492, y: -267}
+        - {x: -484, y: -271}
+        - {x: -484.26923, y: -271.26923}
+      - - {x: 245, y: -273}
+        - {x: 236, y: -273}
+        - {x: 235, y: -276}
+        - {x: 235, y: -282}
+        - {x: 245, y: -282}
+      - - {x: 383, y: -283}
+        - {x: 383, y: -275}
+        - {x: 379, y: -274}
+        - {x: 373, y: -274}
+        - {x: 373, y: -283}
+        - {x: 374, y: -284}
+        - {x: 381, y: -284}
+      - - {x: 305, y: -290}
+        - {x: 305, y: -286}
+        - {x: 303, y: -284}
+        - {x: 298, y: -284}
+        - {x: 295, y: -287}
+        - {x: 295, y: -290}
+        - {x: 297, y: -292}
+        - {x: 303, y: -292}
+      - - {x: 52, y: -307}
+        - {x: 43, y: -314}
+        - {x: 43, y: -366}
+        - {x: 180, y: -490}
+        - {x: 349.6667, y: -490}
+        - {x: 350, y: -491}
+        - {x: 356, y: -496}
+        - {x: 359, y: -495}
+        - {x: 359, y: -490}
+        - {x: 649, y: -490}
+        - {x: 663, y: -465.5854}
+        - {x: 663, y: -478}
+        - {x: 671, y: -484}
+        - {x: 687, y: -484}
+        - {x: 697, y: -456.85715}
+        - {x: 697, y: -472}
+        - {x: 707, y: -472}
+        - {x: 713, y: -467}
+        - {x: 713, y: -456}
+        - {x: 697.3158, y: -456}
+        - {x: 701, y: -446}
+        - {x: 701, y: -436}
+        - {x: 693, y: -432}
+        - {x: 690, y: -433}
+        - {x: 677.633, y: -440.06686}
+        - {x: 731, y: -347}
+        - {x: 731, y: -305}
+        - {x: 553, y: -294}
+        - {x: 389, y: -294}
+        - {x: 389, y: -287}
+        - {x: 381, y: -285}
+        - {x: 373, y: -285}
+        - {x: 373, y: -293}
+        - {x: 374, y: -294}
+        - {x: 185, y: -294}
+      - - {x: -145, y: -296}
+        - {x: -145, y: -288}
+        - {x: -155, y: -288}
+        - {x: -155, y: -295}
+        - {x: -151, y: -297}
+        - {x: -147, y: -297}
+      - - {x: -146, y: -396}
+        - {x: -143, y: -395.5}
+        - {x: -143, y: -396}
+      - - {x: -432, y: -455}
+        - {x: -429, y: -455}
+        - {x: -432, y: -458}
+      - - {x: 474, y: -473}
+        - {x: 474, y: -470}
+        - {x: 477, y: -473}
+        - {x: 475, y: -474}
+      - - {x: 686, y: -495}
+        - {x: 687, y: -488}
+        - {x: 685, y: -486}
+        - {x: 679, y: -486}
+        - {x: 679, y: -496}
+        - {x: 683, y: -496}
+      - - {x: 616, y: -509}
+        - {x: 608, y: -509}
+        - {x: 607, y: -512}
+        - {x: 617, y: -512}
+      - - {x: 74, y: 114}
+        - {x: 72, y: 112}
+        - {x: 72, y: 116}
+      - - {x: 75, y: 107}
+        - {x: 78, y: 107}
+        - {x: 78, y: 100}
+        - {x: 81, y: 97}
+        - {x: 85, y: 97}
+        - {x: 87, y: 95}
+        - {x: 89, y: 95}
+        - {x: 89, y: 94}
+        - {x: 92, y: 91}
+        - {x: 93, y: 91}
+        - {x: 95, y: 93}
+        - {x: 109, y: 93}
+        - {x: 111, y: 91}
+        - {x: 114, y: 91}
+        - {x: 117, y: 88}
+        - {x: 120, y: 88}
+        - {x: 123, y: 85}
+        - {x: 132, y: 85}
+        - {x: 132, y: 84}
+        - {x: 133, y: 83}
+        - {x: 128, y: 83}
+        - {x: 126, y: 81}
+        - {x: 123, y: 81}
+        - {x: 120, y: 78}
+        - {x: 120, y: 76}
+        - {x: 117, y: 75}
+        - {x: 115, y: 73}
+        - {x: 111, y: 73}
+        - {x: 109, y: 71}
+        - {x: 105, y: 70}
+        - {x: 102, y: 67}
+        - {x: 102, y: 64}
+        - {x: 93, y: 55}
+        - {x: 93, y: 52}
+        - {x: 91, y: 50}
+        - {x: 90, y: 46}
+        - {x: 90, y: 16}
+        - {x: 93, y: 13}
+        - {x: 72, y: 13}
+        - {x: 72, y: 16}
+        - {x: 69, y: 19}
+        - {x: 69, y: 25}
+        - {x: 70, y: 26}
+        - {x: 70, y: 28}
+        - {x: 67, y: 31}
+        - {x: 66, y: 31}
+        - {x: 66, y: 37}
+        - {x: 69, y: 37}
+        - {x: 72, y: 40}
+        - {x: 72, y: 46}
+        - {x: 69, y: 49}
+        - {x: 66, y: 49}
+        - {x: 66, y: 55}
+        - {x: 69, y: 55}
+        - {x: 72, y: 58}
+        - {x: 72, y: 94}
+        - {x: 69, y: 97}
+        - {x: 66, y: 97}
+        - {x: 66, y: 103}
+        - {x: 69, y: 103}
+        - {x: 72, y: 106}
+        - {x: 72, y: 110}
+      - - {x: 690, y: 70}
+        - {x: 690, y: 85}
+        - {x: 693, y: 82}
+        - {x: 696, y: 82}
+        - {x: 696, y: 74}
+        - {x: 698, y: 72}
+        - {x: 696, y: 70}
+        - {x: 696, y: 67}
+        - {x: 687, y: 67}
+        - {x: 684, y: 66}
+        - {x: 683, y: 67}
+        - {x: 687, y: 67}
+      - - {x: -309, y: -77}
+        - {x: -306, y: -74}
+        - {x: -306, y: -77}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f0c654b07326884a8e53812971f1b5b
+      internalID: -573952139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_1
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 252
+        width: 246
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 123, y: -66}
+        - {x: 123, y: 64}
+        - {x: 104, y: 90}
+        - {x: -39, y: 90}
+        - {x: -72, y: 86}
+        - {x: -123, y: 38}
+        - {x: -123, y: -57}
+        - {x: -87, y: -90}
+        - {x: 57, y: -90}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfe207b0c93f728489591829edbff7f1
+      internalID: 1067944845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_2
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 63
+        width: 310
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 9, y: -2}
+        - {x: 9, y: 6}
+        - {x: 2, y: 6}
+        - {x: -9, y: 0}
+        - {x: -9, y: -6}
+        - {x: 5, y: -6}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b11f9447b9d0cbd4b9b23f91d19a8a39
+      internalID: 263708862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_3
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 68
+        width: 339
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 3, y: 3}
+        - {x: -3, y: 3}
+        - {x: -3, y: 0}
+        - {x: 0, y: -3}
+        - {x: 3, y: -3}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bfe8da9840584246b5b54a823bd4def
+      internalID: -598873023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_4
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 41
+        width: 680
+        height: 153
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 2, y: 3}
+        - {x: -2, y: 3}
+        - {x: -2, y: -3}
+        - {x: 2, y: -3}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c77b755587e002943b5ae8506842550f
+      internalID: 1824449325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_5
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 346
+        width: 99
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 621b0e05fed767046a35458881918f62
+      internalID: 25562039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_6
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 218
+        width: 186
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9834f663a0a72d7438267f437dde047c
+      internalID: -729683609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_7
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 285
+        width: 206
+        height: 131
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf011c736248a77438bfdc4d65595c84
+      internalID: 131705915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_8
+      rect:
+        serializedVersion: 2
+        x: 658
+        y: 289
+        width: 12
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 505f0ab44ed22f24f9a79f0e80e43eee
+      internalID: -1698629650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_9
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 285
+        width: 222
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a39d3f576efcef04189344007251d538
+      internalID: -1000875418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_10
+      rect:
+        serializedVersion: 2
+        x: 1022
+        y: 282
+        width: 212
+        height: 134
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18a471203af48ae48b357bc6d1920405
+      internalID: 1622297227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_11
+      rect:
+        serializedVersion: 2
+        x: 1026
+        y: 478
+        width: 101
+        height: 102
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3cdc05b9169a3f449d62e4ba9554af4
+      internalID: -1520636952
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_12
+      rect:
+        serializedVersion: 2
+        x: 1186
+        y: 480
+        width: 107
+        height: 101
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a61ad8a4cae150543a4ff490bbfd4461
+      internalID: 663214058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_13
+      rect:
+        serializedVersion: 2
+        x: 1345
+        y: 480
+        width: 139
+        height: 103
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c088fe25912057b41b5e2f9254f3ffef
+      internalID: -807623563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_14
+      rect:
+        serializedVersion: 2
+        x: 843
+        y: 480
+        width: 137
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d3119ad40823dc43854a933c0e3a6a9
+      internalID: -2076025897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_15
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 139
+        width: 727
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b4f32ab332569e4786f76814d3f9edb
+      internalID: -1310076183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Glossy Purple Refer and Earn UI Kit_16
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 620
+        width: 669
+        height: 370
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4af4f61645e5a04d9e96928a9cf0d1c
+      internalID: 844440601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 615b7d3f18546f247ae9d9de73a63890
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Glossy Purple Refer and Earn UI Kit_0: -573952139
+      Glossy Purple Refer and Earn UI Kit_1: 1067944845
+      Glossy Purple Refer and Earn UI Kit_10: 1622297227
+      Glossy Purple Refer and Earn UI Kit_11: -1520636952
+      Glossy Purple Refer and Earn UI Kit_12: 663214058
+      Glossy Purple Refer and Earn UI Kit_13: -807623563
+      Glossy Purple Refer and Earn UI Kit_14: -2076025897
+      Glossy Purple Refer and Earn UI Kit_15: -1310076183
+      Glossy Purple Refer and Earn UI Kit_16: 844440601
+      Glossy Purple Refer and Earn UI Kit_2: 263708862
+      Glossy Purple Refer and Earn UI Kit_3: -598873023
+      Glossy Purple Refer and Earn UI Kit_4: 1824449325
+      Glossy Purple Refer and Earn UI Kit_5: 25562039
+      Glossy Purple Refer and Earn UI Kit_6: -729683609
+      Glossy Purple Refer and Earn UI Kit_7: 131705915
+      Glossy Purple Refer and Earn UI Kit_8: -1698629650
+      Glossy Purple Refer and Earn UI Kit_9: -1000875418
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

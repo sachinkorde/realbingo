@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Serialization;
 using RealBingo.Localization;
 using static UnityEngine.AudioSettings;
 using Debug = UnityEngine.Debug;
@@ -57,7 +58,56 @@ public class APIManager : MonoBehaviour
     private const string TOKEN_KEY = "auth_token";
     private const string USER_DATA_KEY = "user_data";
 
-    public LoginHandler loginHandler;
+    // The LoginHandler lives in the Main scene, while this APIManager is
+    // DontDestroyOnLoad and outlives it. A plain serialised reference therefore
+    // dies the moment Main is unloaded, and logout -> LoadScene("Main") does NOT
+    // restore it: the reloaded scene's own APIManager (which has the fresh
+    // reference) is destroyed by the duplicate check in Awake, so the surviving
+    // instance keeps pointing at the dead object forever.
+    //
+    // The Inspector value is therefore only a starting hint; every read goes
+    // through the loginHandler property, which re-resolves against the live scene.
+    [SerializeField, FormerlySerializedAs("loginHandler")]
+    private LoginHandler loginHandlerRef;
+
+    /// <summary>
+    /// The LoginHandler in the currently loaded scene, or null when that scene
+    /// has none (e.g. while GameScene is up). Survives scene reloads.
+    /// </summary>
+    public LoginHandler loginHandler
+    {
+        get
+        {
+            // Unity's == already reports null for a DESTROYED MonoBehaviour, so
+            // this catches the stale-after-unload case too, not just "never set".
+            if (loginHandlerRef == null)
+            {
+                loginHandlerRef = LoginHandler.Instance != null
+                    ? LoginHandler.Instance
+                    : FindAnyObjectByType<LoginHandler>(FindObjectsInactive.Include);
+            }
+            return loginHandlerRef;
+        }
+        set { loginHandlerRef = value; }
+    }
+
+    /// <summary>
+    /// Called by LoginHandler.Awake, so the surviving APIManager is re-wired to
+    /// whichever LoginHandler the freshly loaded scene created.
+    /// </summary>
+    public void RegisterLoginHandler(LoginHandler handler)
+    {
+        loginHandlerRef = handler;
+    }
+
+    /// <summary>
+    /// Called by LoginHandler.OnDestroy, so we never keep a dead reference.
+    /// </summary>
+    public void UnregisterLoginHandler(LoginHandler handler)
+    {
+        if (loginHandlerRef == handler)
+            loginHandlerRef = null;
+    }
 
     #region Events
     
@@ -88,6 +138,13 @@ public class APIManager : MonoBehaviour
         authToken = PlayerPrefs.GetString(TOKEN_KEY, "");
 
         TouchScreenKeyboard.hideInput = false;
+    }
+
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
     }
 
     #region Authentication APIs
@@ -507,7 +564,9 @@ public class APIManager : MonoBehaviour
             
             yield return request.SendWebRequest();
 
-            // Clear local data regardless of server response
+            // Clear local data regardless of server response. The cached
+            // balance goes first: its key is derived from the token.
+            WalletManager.ForgetCachedBalance();
             authToken = "";
             PlayerPrefs.DeleteKey(TOKEN_KEY);
             PlayerPrefs.DeleteKey(USER_DATA_KEY);
@@ -538,7 +597,9 @@ public class APIManager : MonoBehaviour
             
             yield return request.SendWebRequest();
 
-            // Clear local data
+            // Clear local data. The cached balance goes first: its key is
+            // derived from the token.
+            WalletManager.ForgetCachedBalance();
             authToken = "";
             PlayerPrefs.DeleteKey(TOKEN_KEY);
             PlayerPrefs.DeleteKey(USER_DATA_KEY);
@@ -940,7 +1001,7 @@ public class APIManager : MonoBehaviour
         }
     }
 
-    /// <summary>POST the player's bets for a session. slotNo = clock-derived session number. bids = number -> amount.</summary>
+    /// <summary>POST the player's bets for a session. slotNo = clock-derived session number. bids = bet target -> amount, where BetManager.JokerNumber is sent as "j".</summary>
     public void PlaceBid(long slotNo, Dictionary<int, long> bids, Action<bool, string, PlaceBidData> callback)
     {
         StartCoroutine(PlaceBidCoroutine(slotNo, bids, callback));
@@ -950,14 +1011,16 @@ public class APIManager : MonoBehaviour
     {
         string url = $"{baseUrl}/place-bid";
 
-        // Build the bids payload the backend expects: [{"3":100,"5":50}]
+        // Build the bids payload the backend expects. Numbers go out under their
+        // own digit; the Joker is the string "j", not its internal index:
+        //     [{"j":100,"0":50,"1":20}]
         System.Text.StringBuilder sb = new System.Text.StringBuilder("[{");
         bool first = true;
         foreach (var kvp in bids)
         {
             if (kvp.Value <= 0) continue;
             if (!first) sb.Append(",");
-            sb.Append($"\"{kvp.Key}\":{kvp.Value}");
+            sb.Append($"\"{BetManager.WireKey(kvp.Key)}\":{kvp.Value}");
             first = false;
         }
         sb.Append("}]");
@@ -1350,6 +1413,28 @@ public class APIManager : MonoBehaviour
         return authToken;
     }
 
+    /// <summary>
+    /// Short, stable tag for the signed-in session, for PlayerPrefs keys that
+    /// must not bleed from one account to the next on a shared device. Null
+    /// when nobody is signed in, so callers skip their cache entirely instead
+    /// of falling back to a key everyone shares.
+    /// </summary>
+    public string SessionFingerprint()
+    {
+        if (string.IsNullOrEmpty(authToken)) return null;
+
+        // FNV-1a over the token. All we need is "different session => different
+        // key"; the token itself never goes into a key or gets stored twice.
+        uint hash = 2166136261u;
+        foreach (char c in authToken)
+        {
+            hash ^= c;
+            hash *= 16777619u;
+        }
+
+        return hash.ToString("x8");
+    }
+
     public void SetAuthToken(string token)
     {
         authToken = token;
@@ -1360,6 +1445,7 @@ public class APIManager : MonoBehaviour
     /// <summary>Clear the local session (token) without calling the server.</summary>
     public void ClearSession()
     {
+        WalletManager.ForgetCachedBalance();   // keyed off the token, so purge first
         authToken = "";
         PlayerPrefs.DeleteKey(TOKEN_KEY);
         PlayerPrefs.DeleteKey(USER_DATA_KEY);

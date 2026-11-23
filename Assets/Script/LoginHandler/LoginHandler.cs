@@ -98,6 +98,23 @@ public class LoginHandler : MonoBehaviour
         }
         Instance = this;
         //DontDestroyOnLoad(gameObject);
+
+        // APIManager is DontDestroyOnLoad, so after logout reloads Main it is
+        // the OLD instance that survives, still holding the destroyed
+        // LoginHandler from the previous load (its own scene copy is thrown
+        // away as a duplicate). Hand it this live one.
+        if (APIManager.Instance != null)
+            APIManager.Instance.RegisterLoginHandler(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+
+        // Don't leave the persistent APIManager holding a dead reference.
+        if (APIManager.Instance != null)
+            APIManager.Instance.UnregisterLoginHandler(this);
     }
 
     private void Start()
@@ -181,6 +198,7 @@ public class LoginHandler : MonoBehaviour
         //StartCoroutine(LoginCoroutine(credential, password));
         APIManager.Instance?.Login(credential, password, (success, message, userData) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
 
             if (success)
@@ -263,6 +281,7 @@ public class LoginHandler : MonoBehaviour
 
         APIManager.Instance.CheckUsername(username, (requestOk, available, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             usernameCheckRunning = false;
 
             if (!requestOk)
@@ -398,6 +417,7 @@ public class LoginHandler : MonoBehaviour
 
         APIManager.Instance?.SendOTP(mobile, "register", (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
 
             if (success)
@@ -495,6 +515,7 @@ public class LoginHandler : MonoBehaviour
         ShowLoading();
         APIManager.Instance?.Register(mobile, email, password, confirmPassword, otp, username, (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
             
             if (success)
@@ -547,6 +568,7 @@ public class LoginHandler : MonoBehaviour
         
         APIManager.Instance?.SendOTP(mobile, "forgot_password", (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
             
             if (success)
@@ -590,6 +612,7 @@ public class LoginHandler : MonoBehaviour
         ShowLoading();
         APIManager.Instance?.ForgotPassword(mobile, otp, (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
             
             if (success)
@@ -630,6 +653,7 @@ public class LoginHandler : MonoBehaviour
         ShowLoading();
         APIManager.Instance?.ResetPassword(password, confirmPassword, (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             HideLoading();
             
             if (success)

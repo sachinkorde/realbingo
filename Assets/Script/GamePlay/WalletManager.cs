@@ -22,6 +22,9 @@ public class WalletManager : MonoBehaviour
     private bool withdrawCashPanelWired;
     private bool addAmountRequestRunning;
 
+    // Base name only — the real key is this plus the signed-in session, see
+    // BalanceKey(). A single shared key let the next account on a device read
+    // the previous one's balance until the first server refresh landed.
     private const string BALANCE_PREF_KEY = "WalletBalance";
     private const string TOTAL_WITHDRAWN_PREF_KEY = "WalletTotalWithdrawn";
     private const string LAST_WITHDRAW_AMOUNT_PREF_KEY = "WalletLastWithdrawAmount";
@@ -32,6 +35,13 @@ public class WalletManager : MonoBehaviour
         Instance = this;
         //DontDestroyOnLoad(gameObject);
         LoadBalance();
+    }
+
+    private void OnDestroy()
+    {
+        // C#'s ?. operator bypasses Unity's == null override, so a static left
+        // pointing at a destroyed object gets called into. Drop it here.
+        if (Instance == this) Instance = null;
     }
 
     private void Start()
@@ -93,6 +103,7 @@ public class WalletManager : MonoBehaviour
 
         APIManager.Instance.AddAmount(parsedAmount, (success, response) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             addAmountRequestRunning = false;
 
             if (success)
@@ -141,7 +152,7 @@ public class WalletManager : MonoBehaviour
             amountToAdd = addCashViewModePanel.GetComponentInChildren<TMP_InputField>(true);
 
         if (amountToAdd != null)
-            amountToAdd.interactable = true;
+            amountToAdd.interactable = false;
 
         Button[] buttons = addCashViewModePanel.GetComponentsInChildren<Button>(true);
 
@@ -180,7 +191,7 @@ public class WalletManager : MonoBehaviour
             amountToWithdraw = withdrawCashViewModePanel.GetComponentInChildren<TMP_InputField>(true);
 
         if (amountToWithdraw != null)
-            amountToWithdraw.interactable = true;
+            amountToWithdraw.interactable = false;
 
         Button[] buttons = withdrawCashViewModePanel.GetComponentsInChildren<Button>(true);
 
@@ -266,6 +277,7 @@ public class WalletManager : MonoBehaviour
         // holds the funds, and an admin approves the payout from the dashboard.
         APIManager.Instance.Withdraw(parsedAmount, "bank", (success, message) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (success)
             {
                 RefreshFromServer();
@@ -367,15 +379,61 @@ public class WalletManager : MonoBehaviour
             panelParent.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// PlayerPrefs key for the cached balance, scoped to the signed-in session
+    /// so one account's number can never surface under another's on a shared
+    /// device. Null when nobody is signed in — there is nothing to cache then,
+    /// and falling back to a shared key is exactly the bug this avoids.
+    /// </summary>
+    private static string BalanceKey()
+    {
+        if (APIManager.Instance == null) return null;
+
+        string session = APIManager.Instance.SessionFingerprint();
+        return session == null ? null : $"{BALANCE_PREF_KEY}_{session}";
+    }
+
+    /// <summary>
+    /// Drops the cached balance for the session that is ending. APIManager calls
+    /// this while the token is still in place, since the key is derived from it.
+    /// </summary>
+    public static void ForgetCachedBalance()
+    {
+        string key = BalanceKey();
+        if (key != null) PlayerPrefs.DeleteKey(key);
+
+        PlayerPrefs.DeleteKey(BALANCE_PREF_KEY);   // leftover from older builds
+        PlayerPrefs.Save();
+    }
+
     private void LoadBalance()
     {
-        currentBalance = GetLongPref(BALANCE_PREF_KEY, currentBalance);
+        // Older builds cached the balance under one global key, readable by
+        // whoever signed in next. Delete that copy on sight — nothing reads it.
+        if (PlayerPrefs.HasKey(BALANCE_PREF_KEY))
+        {
+            PlayerPrefs.DeleteKey(BALANCE_PREF_KEY);
+            PlayerPrefs.Save();
+        }
+
+        string key = BalanceKey();
+
+        // Signed out: keep the built-in default and wait for the server rather
+        // than showing whatever the last account on this device had.
+        if (key == null) return;
+
+        currentBalance = GetLongPref(key, currentBalance);
     }
 
     private void SaveBalance()
     {
-        SetLongPref(BALANCE_PREF_KEY, currentBalance);
-        PlayerPrefs.Save();
+        string key = BalanceKey();
+        if (key != null)
+        {
+            SetLongPref(key, currentBalance);
+            PlayerPrefs.Save();
+        }
+
         NotifyUpdate();
     }
 
@@ -438,6 +496,7 @@ public class WalletManager : MonoBehaviour
         if (APIManager.Instance == null) return;
         APIManager.Instance.GetWalletBalance((ok, balance) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (ok) SetBalanceFromServer(balance);
         });
     }
@@ -463,6 +522,7 @@ public class WalletManager : MonoBehaviour
 
         APIManager.Instance.TransferMoney(recipientPhoneOrEmail, amount, (success, message, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             if (success) RefreshFromServer();
             ShowWalletMessage(string.IsNullOrEmpty(message)
                 ? (success ? "Transfer successful." : "Transfer failed.")

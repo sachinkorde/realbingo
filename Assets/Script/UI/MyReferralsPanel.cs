@@ -70,6 +70,7 @@ public class MyReferralsPanel : MonoBehaviour
 
         APIManager.Instance.GetReferralList((ok, message, data) =>
         {
+            if (this == null) return;   // scene unloaded while the request was in flight
             SetLoading(false);
 
             if (!ok || data == null)

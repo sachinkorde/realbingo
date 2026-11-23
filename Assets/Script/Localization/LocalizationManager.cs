@@ -164,6 +164,13 @@ namespace RealBingo.Localization
             }
         }
 
+        private void OnDestroy()
+        {
+            // C#'s ?. operator bypasses Unity's == null override, so a static left
+            // pointing at a destroyed object gets called into. Drop it here.
+            if (Instance == this) Instance = null;
+        }
+
         /// <summary>
         /// Guarantees a manager exists even if no scene has one — a script that
         /// calls L.T() before the first scene is wired up still gets strings
